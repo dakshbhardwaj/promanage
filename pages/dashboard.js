@@ -1,6 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import ManageEmployee from "../components/ManageEmployee";
 
 function Dashboard() {
   const [selectedTab, setSelectedTab] = useState("dashboard");
@@ -107,7 +108,11 @@ function Dashboard() {
             </div>
           )}
           {selectedTab === "projects" && <div>My Projects Contents</div>}
-          {selectedTab === "employees" && <div>Employee </div>}
+          {selectedTab === "employees" && (
+            <div>
+              <ManageEmployee />{" "}
+            </div>
+          )}
           {selectedTab === "activities" && <div>Activities</div>}
         </main>
       </div>
