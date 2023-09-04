@@ -84,7 +84,7 @@ const EmployeeForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div class="flexbox-container">
+      <div className="flexbox-container">
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Name:
@@ -115,7 +115,7 @@ const EmployeeForm = () => {
         </div>
       </div>
 
-      <div class="flexbox-container">
+      <div className="flexbox-container">
         <div className="mb-3">
           <label htmlFor="yearsOfExperience" className="form-label">
             Years of Experience:
@@ -149,7 +149,7 @@ const EmployeeForm = () => {
       <div className="mb-3">
         <h2>Skills:</h2>
 
-        <div class="flexbox-container">
+        <div className="flexbox-container">
           <div className="mb-3">
             <label htmlFor="language" className="form-label">
               Language:
