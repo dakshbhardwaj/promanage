@@ -1,8 +1,7 @@
-// pages/employee.js
 import React from "react";
 import EmployeeForm from "../components/EmployeeForm";
 
-const EmployeePage = () => {
+const CreateEmployeePage = () => {
   return (
     <div>
       <h1>Enter User Details</h1>
@@ -11,4 +10,4 @@ const EmployeePage = () => {
   );
 };
 
-export default EmployeePage;
+export default CreateEmployeePage;
