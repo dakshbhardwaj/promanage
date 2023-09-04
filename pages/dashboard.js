@@ -3,9 +3,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 function Dashboard() {
-  const [selectedTab, setSelectedTab] = useState("dashboard"); // Initialize the selected tab
+  const [selectedTab, setSelectedTab] = useState("dashboard");
 
-  // Define functions to handle tab selection
   const handleDashboardClick = () => setSelectedTab("dashboard");
   const handleProjectsClick = () => setSelectedTab("projects");
   const handleEmployeesClick = () => setSelectedTab("employees");
