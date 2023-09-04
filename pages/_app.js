@@ -1,7 +1,6 @@
-import "bootstrap/dist/css/bootstrap.css";
-import "../styles/globals.css";
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
+import "bootstrap/dist/css/bootstrap.css";
 import Head from "next/head";
 import { useEffect } from "react";
 
