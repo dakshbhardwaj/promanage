@@ -1,7 +1,7 @@
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Admin from "./admin";
 
 const Home = () => {
   const { data: session } = useSession();
@@ -25,12 +25,7 @@ const Home = () => {
       <main className={styles.main}>
         <div>
           {session && session.user ? (
-            <div className={styles.card}>
-              <div className={styles.cardContent}>
-                <h2>PRO Manage AI</h2>
-                <p>LOGIN SUCCESSFUL</p>
-              </div>
-            </div>
+            <Admin />
           ) : (
             <p>You need to sign in to access the portal</p>
           )}
