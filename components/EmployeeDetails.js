@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const EmployeeDetails = ({ employee }) => {
@@ -55,7 +56,11 @@ const EmployeeDetails = ({ employee }) => {
                 .filter((project) => project.status === "current")
                 .map((project, index) => (
                   <tr key={index}>
-                    <td>{project.name}</td>
+                    <td>
+                      <Link href={`../project/${project.id}`}>
+                        {project.name}
+                      </Link>
+                    </td>
                     <td>In Progress</td>
                     <td>{project.description}</td>
                   </tr>
@@ -78,7 +83,11 @@ const EmployeeDetails = ({ employee }) => {
                 .filter((project) => project.status === "upcoming")
                 .map((project, index) => (
                   <tr key={index}>
-                    <td>{project.name}</td>
+                    <td>
+                      <Link href={`../project/${project.id}`}>
+                        {project.name}
+                      </Link>
+                    </td>
                     <td>Upcoming</td>
                     <td>{project.description}</td>
                   </tr>
@@ -101,7 +110,11 @@ const EmployeeDetails = ({ employee }) => {
                 .filter((project) => project.status === "completed")
                 .map((project, index) => (
                   <tr key={index}>
-                    <td>{project.name}</td>
+                    <td>
+                      <Link href={`../project/${project.id}`}>
+                        {project.name}
+                      </Link>
+                    </td>
                     <td>Completed</td>
                     <td>{project.description}</td>
                   </tr>

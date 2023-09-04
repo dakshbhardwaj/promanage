@@ -28,16 +28,19 @@ const EmployeePage = () => {
     ],
     projects: [
       {
+        id: "1",
         name: "Project A",
         status: "current",
         description: "Working as a frontend developer on Project A.",
       },
       {
+        id: "2",
         name: "Project B",
         status: "upcoming",
         description: "Scheduled to work on Project B next month.",
       },
       {
+        id: "3",
         name: "Project C",
         status: "completed",
         description: "Successfully completed Project C last year.",
