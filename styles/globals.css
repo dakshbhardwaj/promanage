@@ -18,7 +18,6 @@ a {
 .flexbox-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
 }
 
 @media (prefers-color-scheme: dark) {

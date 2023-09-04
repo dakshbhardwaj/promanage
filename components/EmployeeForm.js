@@ -49,13 +49,37 @@ const EmployeeForm = () => {
         yearsOfExperience: "",
         proficiency: "amateur",
       });
+    } else {
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can handle form submission here, for example, send the data to an API.
-    console.log(formData);
+
+    // Check for required fields before submission
+    const requiredFields = [
+      "name",
+      "email",
+      "yearsOfExperience",
+      "designation",
+    ];
+    const hasErrors = requiredFields.some((field) => {
+      if (!formData[field]) {
+        setFormErrors({
+          ...formErrors,
+          [field]: `${
+            field.charAt(0).toUpperCase() + field.slice(1)
+          } is required`,
+        });
+        return true;
+      }
+      return false;
+    });
+
+    if (!hasErrors) {
+      // You can handle form submission here, for example, send the data to an API.
+      console.log(formData);
+    }
   };
 
   return (
@@ -137,7 +161,6 @@ const EmployeeForm = () => {
               value={newSkill.language}
               onChange={handleSkillInputChange}
               className="form-control"
-              required
             />
           </div>
           <div className="mb-3">
@@ -151,7 +174,6 @@ const EmployeeForm = () => {
               value={newSkill.yearsOfExperience}
               onChange={handleSkillInputChange}
               className="form-control"
-              required
             />
           </div>
           <div className="mb-3">
@@ -164,7 +186,6 @@ const EmployeeForm = () => {
               value={newSkill.proficiency}
               onChange={handleSkillInputChange}
               className="form-select"
-              required
             >
               {proficiencyLevels.map((level) => (
                 <option key={level.value} value={level.value}>
@@ -180,8 +201,9 @@ const EmployeeForm = () => {
         <ul className="list-group mt-3">
           {formData.skills.map((skill, index) => (
             <li key={index} className="list-group-item">
-              Language: {skill.language}, Years of Experience:{" "}
-              {skill.yearsOfExperience}, Proficiency: {skill.proficiency}
+              {index + 1}
+              {")"} {skill.language}, YOE: {skill.yearsOfExperience},
+              Proficiency: {skill.proficiency.toUpperCase()}
             </li>
           ))}
         </ul>
