@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
+import axios from "axios";
 
 const modalCustomStyles = {
   content: {
@@ -19,7 +20,7 @@ function AddProjectForm() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [estimatedDeliveryDate, setEstimatedDeliveryDate] = useState("");
-  const [showSuggestions, setShowSuggestion] = useState(true);
+  const [showSuggestions, setShowSuggestion] = useState(false);
 
   const [errors, setErrors] = useState({});
   const [employees, setEmployees] = useState([
@@ -109,10 +110,22 @@ function AddProjectForm() {
       const formData = {
         name,
         description,
-        company,
+        clientName: company,
+        estimatedDeliveryTime: estimatedDeliveryDate,
         startDate,
         endDate,
       };
+
+      axios
+        .post("https://promanage-fpft.onrender.com/project", formData)
+        .then((res) => {
+          console.log(res.data);
+          setProjects(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       setShowSuggestion(true);
       console.log("Form data:", formData);
     } else {

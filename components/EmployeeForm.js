@@ -1,21 +1,16 @@
 // components/EmployeeForm.js
 import React, { useState } from "react";
-
-const proficiencyLevels = [
-  { value: "amateur", label: "Amateur" },
-  { value: "basic", label: "Basic" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "advanced", label: "Advanced" },
-  { value: "expert", label: "Expert" },
-];
+import axios from "axios";
+import { ProficiencyRating } from "../constants";
 
 const EmployeeForm = () => {
+  const currentUser = {};
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    yearsOfExperience: "",
-    designation: "",
-    skills: [],
+    name: currentUser?.name ?? "",
+    email: currentUser?.email ?? "",
+    yearsOfExperience: currentUser?.yearsOfExperience ?? "",
+    designation: currentUser?.designation ?? "",
+    skills: currentUser?.skills ?? [],
   });
 
   const [newSkill, setNewSkill] = useState({
@@ -77,8 +72,17 @@ const EmployeeForm = () => {
     });
 
     if (!hasErrors) {
-      // You can handle form submission here, for example, send the data to an API.
-      console.log(formData);
+      axios
+        .put(
+          `https://promanage-fpft.onrender.com/user/${currentUser?._id ?? ""}`,
+          formData
+        )
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -187,7 +191,7 @@ const EmployeeForm = () => {
               onChange={handleSkillInputChange}
               className="form-select"
             >
-              {proficiencyLevels.map((level) => (
+              {Object.values(ProficiencyRating)?.map((level) => (
                 <option key={level.value} value={level.value}>
                   {level.label}
                 </option>

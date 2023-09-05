@@ -1,4 +1,6 @@
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
@@ -15,6 +17,7 @@ const modalCustomStyles = {
 
 const ManageEmployee = () => {
   const [employees, setEmployees] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     axios
@@ -33,58 +36,55 @@ const ManageEmployee = () => {
     Modal.setAppElement(document.body);
   }, []);
 
-  const [newEmployee, setNewEmployee] = useState({
-    displayName: "",
-    designation: "",
-    yearsOfExperience: "",
-  });
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null); // Track the edited employee
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewEmployee({
-      ...newEmployee,
+    setEditingEmployee({
+      ...editingEmployee,
       [name]: value,
     });
   };
 
   const openModal = (employee) => {
     setIsModalOpen(true);
-    if (employee) {
-      setEditingEmployee(employee); // Set the employee to edit
-      setNewEmployee({ ...employee }); // Initialize the form fields with employee data
-    } else {
-      setEditingEmployee(null); // Reset editingEmployee when adding a new one
-      setNewEmployee({
-        displayName: "",
-        designation: "",
-        yearsOfExperience: "",
-      });
-    }
+    setEditingEmployee(employee); // Set the employee to edit
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const addEmployee = () => {
-    setEmployees([...employees, newEmployee]);
-    closeModal();
-  };
-
   const updateEmployee = () => {
-    const updatedEmployees = employees.map((emp) =>
-      emp === editingEmployee ? newEmployee : emp
-    );
-    setEmployees(updatedEmployees);
+    axios
+      .put(
+        `https://promanage-fpft.onrender.com/user/${editingEmployee._id}`,
+        editingEmployee
+      )
+      .then((res) => {
+        console.log(res.data);
+        const updatedEmployee = employees.map((emp) =>
+          emp._id === editingEmployee._id ? res.data : emp
+        );
+        setEmployees(updatedEmployee);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     closeModal();
   };
 
   const deleteEmployee = (employee) => {
-    const updatedEmployees = employees.filter((emp) => emp !== employee);
-    setEmployees(updatedEmployees);
+    axios
+      .delete(`https://promanage-fpft.onrender.com/user/${employee._id}`)
+      .then(() => {
+        const updatedEmployees = employees.filter((emp) => emp !== employee);
+        setEmployees(updatedEmployees);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -100,7 +100,9 @@ const ManageEmployee = () => {
                 <button
                   type="button"
                   className="btn btn-info add-new"
-                  onClick={() => openModal(null)}
+                  onClick={() => {
+                    router.push("../create-employee");
+                  }}
                 >
                   Add New
                 </button>
@@ -119,7 +121,11 @@ const ManageEmployee = () => {
             <tbody>
               {employees.map((employee, index) => (
                 <tr key={index}>
-                  <td>{employee.displayName}</td>
+                  <td>
+                    <Link href={`../employee/${employee._id}`}>
+                      {employee.displayName}
+                    </Link>
+                  </td>
                   <td>{employee.designation}</td>
                   <td>{employee.yearsOfExperience}</td>
                   <td>
@@ -151,7 +157,7 @@ const ManageEmployee = () => {
         contentLabel="Employee Modal"
         style={modalCustomStyles}
       >
-        <h2>{editingEmployee ? "Edit Employee" : "Add New Employee"}</h2>
+        <h2>{"Edit Employee"}</h2>
         <form>
           <div className="form-group">
             <label htmlFor="displayName">Display Name</label>
@@ -160,11 +166,7 @@ const ManageEmployee = () => {
               className="form-control"
               id="displayName"
               name="displayName"
-              value={
-                editingEmployee
-                  ? editingEmployee.displayName
-                  : newEmployee.displayName
-              }
+              value={editingEmployee?.displayName ?? ""}
               onChange={handleInputChange}
               required
             />
@@ -176,11 +178,7 @@ const ManageEmployee = () => {
               className="form-control"
               id="designation"
               name="designation"
-              value={
-                editingEmployee
-                  ? editingEmployee.designation
-                  : newEmployee.designation
-              }
+              value={editingEmployee?.designation ?? ""}
               onChange={handleInputChange}
               required
             />
@@ -192,32 +190,18 @@ const ManageEmployee = () => {
               className="form-control"
               id="yearsOfExperience"
               name="yearsOfExperience"
-              value={
-                editingEmployee
-                  ? editingEmployee.yearsOfExperience
-                  : newEmployee.yearsOfExperience
-              }
+              value={editingEmployee?.yearsOfExperience ?? ""}
               onChange={handleInputChange}
               required
             />
           </div>
-          {editingEmployee ? (
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={updateEmployee}
-            >
-              Update Employee
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={addEmployee}
-            >
-              Add Employee
-            </button>
-          )}
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={updateEmployee}
+          >
+            Update Employee
+          </button>
           <button
             type="button"
             className="btn btn-secondary"
