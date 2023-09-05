@@ -2,6 +2,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import ManageEmployee from "../components/ManageEmployee";
+import ManageProjects from "../components/ManageProjects";
 
 function Dashboard() {
   const [selectedTab, setSelectedTab] = useState("dashboard");
@@ -16,9 +17,9 @@ function Dashboard() {
 
   useEffect(() => {
     console.log(session);
-    if (!session?.user) {
-      router.push("/");
-    }
+    // if (!session?.user) {
+    //   router.push("/");
+    // }
   }, [session, router]);
 
   const handleSignOut = async () => {
@@ -107,10 +108,14 @@ function Dashboard() {
               <h2>My Dashboard content</h2>
             </div>
           )}
-          {selectedTab === "projects" && <div>My Projects Contents</div>}
+          {selectedTab === "projects" && (
+            <div>
+              <ManageProjects />
+            </div>
+          )}
           {selectedTab === "employees" && (
             <div>
-              <ManageEmployee />{" "}
+              <ManageEmployee />
             </div>
           )}
           {selectedTab === "activities" && <div>Activities</div>}

@@ -34,9 +34,9 @@ const ManageEmployee = () => {
   }, []);
 
   const [newEmployee, setNewEmployee] = useState({
-    name: "",
-    department: "",
-    phone: "",
+    displayName: "",
+    designation: "",
+    yearsOfExperience: "",
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,9 +58,9 @@ const ManageEmployee = () => {
     } else {
       setEditingEmployee(null); // Reset editingEmployee when adding a new one
       setNewEmployee({
-        name: "",
-        department: "",
-        phone: "",
+        displayName: "",
+        designation: "",
+        yearsOfExperience: "",
       });
     }
   };
@@ -94,9 +94,7 @@ const ManageEmployee = () => {
           <div className="table-title">
             <div className="row">
               <div className="col-sm-8">
-                <h2>
-                  Employee <b>Details</b>
-                </h2>
+                <h2>Employee Details</h2>
               </div>
               <div className="col-sm-4">
                 <button
@@ -112,9 +110,9 @@ const ManageEmployee = () => {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Display Name</th>
                 <th>Designation</th>
-                <th>Yoe</th>
+                <th>Years Of Experience</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -122,8 +120,8 @@ const ManageEmployee = () => {
               {employees.map((employee, index) => (
                 <tr key={index}>
                   <td>{employee.displayName}</td>
-                  <td>{employee.displayName}</td>
-                  <td>{employee.displayName}</td>
+                  <td>{employee.designation}</td>
+                  <td>{employee.yearsOfExperience}</td>
                   <td>
                     <a
                       className="edit"
@@ -156,37 +154,49 @@ const ManageEmployee = () => {
         <h2>{editingEmployee ? "Edit Employee" : "Add New Employee"}</h2>
         <form>
           <div className="form-group">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="displayName">Display Name</label>
             <input
               type="text"
               className="form-control"
-              id="name"
-              name="name"
-              value={newEmployee.name}
+              id="displayName"
+              name="displayName"
+              value={
+                editingEmployee
+                  ? editingEmployee.displayName
+                  : newEmployee.displayName
+              }
               onChange={handleInputChange}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="department">Department</label>
+            <label htmlFor="designation">Designation</label>
             <input
               type="text"
               className="form-control"
-              id="department"
-              name="department"
-              value={newEmployee.department}
+              id="designation"
+              name="designation"
+              value={
+                editingEmployee
+                  ? editingEmployee.designation
+                  : newEmployee.designation
+              }
               onChange={handleInputChange}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="phone">Phone</label>
+            <label htmlFor="yearsOfExperience">Years Of Experience</label>
             <input
               type="text"
               className="form-control"
-              id="phone"
-              name="phone"
-              value={newEmployee.phone}
+              id="yearsOfExperience"
+              name="yearsOfExperience"
+              value={
+                editingEmployee
+                  ? editingEmployee.yearsOfExperience
+                  : newEmployee.yearsOfExperience
+              }
               onChange={handleInputChange}
               required
             />
