@@ -8,7 +8,6 @@ const ProjectPage = () => {
   const [project, setProject] = useState({});
 
   useEffect(() => {
-    console.log({ router });
     axios
       .get(`https://promanage-fpft.onrender.com/project/${router.query.id}`)
       .then((res) => {
