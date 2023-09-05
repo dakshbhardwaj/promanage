@@ -36,19 +36,13 @@ const ManageEmployee = () => {
     Modal.setAppElement(document.body);
   }, []);
 
-  const [newEmployee, setNewEmployee] = useState({
-    displayName: "",
-    designation: "",
-    yearsOfExperience: "",
-  });
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null); // Track the edited employee
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewEmployee({
-      ...newEmployee,
+    setEditingEmployee({
+      ...editingEmployee,
       [name]: value,
     });
   };
@@ -56,7 +50,6 @@ const ManageEmployee = () => {
   const openModal = (employee) => {
     setIsModalOpen(true);
     setEditingEmployee(employee); // Set the employee to edit
-    setNewEmployee({ ...employee }); // Initialize the form fields with employee data
   };
 
   const closeModal = () => {
@@ -64,10 +57,21 @@ const ManageEmployee = () => {
   };
 
   const updateEmployee = () => {
-    const updatedEmployees = employees.map((emp) =>
-      emp === editingEmployee ? newEmployee : emp
-    );
-    setEmployees(updatedEmployees);
+    axios
+      .put(
+        `https://promanage-fpft.onrender.com/employee/${editingEmployee._id}`,
+        editingEmployee
+      )
+      .then((res) => {
+        console.log(res.data);
+        const updatedEmployee = employees.map((emp) =>
+          emp === editingEmployee ? res.data : emp
+        );
+        setEmployees(updatedEmployee);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     closeModal();
   };
 

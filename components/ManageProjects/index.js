@@ -36,21 +36,13 @@ const ManageProjects = () => {
     Modal.setAppElement(document.body);
   }, []);
 
-  const [newProject, setNewProject] = useState({
-    name: "",
-    description: "",
-    status: "",
-    estimatedDeliveryTime: "",
-    startDate: "",
-  });
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState(null); // Track the edited project
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewProject({
-      ...newProject,
+    setEditingProject({
+      ...editingProject,
       [name]: value,
     });
   };
@@ -58,23 +50,28 @@ const ManageProjects = () => {
   const openModal = (project) => {
     setIsModalOpen(true);
     setEditingProject(project); // Set the project to edit
-    setNewProject({ ...project }); // Initialize the form fields with project data
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const addProject = () => {
-    setProjects([...projects, newProject]);
-    closeModal();
-  };
-
   const updateProject = () => {
-    const updatedProject = projects.map((proj) =>
-      proj === editingProject ? newProject : proj
-    );
-    setProjects(updatedProject);
+    axios
+      .put(
+        `https://promanage-fpft.onrender.com/project/${editingProject._id}`,
+        editingProject
+      )
+      .then((res) => {
+        console.log(res.data);
+        const updatedProject = projects.map((proj) =>
+          proj === editingProject ? res.data : proj
+        );
+        setProjects(updatedProject);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     closeModal();
   };
 
