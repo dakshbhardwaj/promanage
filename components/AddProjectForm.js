@@ -1,4 +1,16 @@
 import React, { useState } from "react";
+import Modal from "react-modal";
+
+const modalCustomStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 function AddProjectForm() {
   const [name, setName] = useState("");
@@ -7,7 +19,7 @@ function AddProjectForm() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [estimatedDeliveryDate, setEstimatedDeliveryDate] = useState("");
-  const [showSuggestions, setShowSuggestion] = useState(false);
+  const [showSuggestions, setShowSuggestion] = useState(true);
 
   const [errors, setErrors] = useState({});
   const [employees, setEmployees] = useState([
@@ -31,7 +43,35 @@ function AddProjectForm() {
     },
   ]);
 
+  const newEmployeesList = [
+    {
+      id: "1",
+      name: "John Doe",
+      email: "john.doe@example.com",
+      designation: "Software Engineer",
+    },
+    {
+      id: "2",
+      name: "Jane Smith",
+      email: "jane.smith@example.com",
+      designation: "UI Designer",
+    },
+    {
+      id: "3",
+      name: "Bob Johnson",
+      email: "bob.johnson@example.com",
+      designation: "Project Manager",
+    },
+    {
+      id: "4",
+      name: "Johnson",
+      email: "bob.johnson@example.com",
+      designation: "Project Manager",
+    },
+  ];
+
   let [acceptedEmployees, setAcceptedEmployee] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -80,14 +120,28 @@ function AddProjectForm() {
     }
   };
 
-  const removeEmployee = (index) => {
-    employees.splice(index, 1);
-    setEmployees(employees);
+  const removeEmployee = (employeeId) => {
+    const updatedEmployees = employees.filter((emp) => {
+      return emp.id != employeeId;
+    });
+    setEmployees([...updatedEmployees]);
   };
 
   const acceptEmployee = (employeeId) => {
     acceptedEmployees.push(employeeId);
-    setAcceptedEmployee(acceptedEmployees);
+    setAcceptedEmployee([...acceptedEmployees]);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const addEmployee = (newEmployee) => {
+    setEmployees([...employees, newEmployee]);
   };
 
   return (
@@ -221,14 +275,14 @@ function AddProjectForm() {
                       disabled={acceptedEmployees.includes(employee.id)}
                     >
                       {acceptedEmployees.includes(employee.id)
-                        ? "Added"
-                        : "Add"}
+                        ? "Accepted"
+                        : "Accept"}
                     </button>
                   </td>
                   <td>
                     <button
                       onClick={() => {
-                        removeEmployee(index);
+                        removeEmployee(employee.id);
                       }}
                     >
                       Remove
@@ -238,6 +292,67 @@ function AddProjectForm() {
               ))}
             </tbody>
           </table>
+          <button
+            type="button"
+            className="btn btn-info add-new"
+            onClick={() => openModal(null)}
+          >
+            Add New
+          </button>
+
+          <Modal
+            isOpen={isModalOpen}
+            onRequestClose={closeModal}
+            contentLabel="Employee Modal"
+            style={modalCustomStyles}
+          >
+            <div>
+              {" "}
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Designation</th>
+                    <th>Add</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {newEmployeesList.map((employee, index) => (
+                    <tr key={index}>
+                      <td>{employee.name}</td>
+                      <td>{employee.email}</td>
+                      <td>{employee.designation}</td>
+                      <td>
+                        <button
+                          onClick={() => {
+                            if (
+                              employees.some((emp) => emp.id === employee.id)
+                            ) {
+                              removeEmployee(employee.id);
+                            } else {
+                              addEmployee(employee);
+                            }
+                          }}
+                        >
+                          {employees.some((emp) => emp.id === employee.id)
+                            ? "Added"
+                            : "Add"}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={closeModal}
+              >
+                Save
+              </button>
+            </div>
+          </Modal>
         </div>
       ) : null}
     </div>
