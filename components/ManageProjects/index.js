@@ -13,15 +13,15 @@ const modalCustomStyles = {
   },
 };
 
-const ManageEmployee = () => {
-  const [employees, setEmployees] = useState([]);
+const ManageProjects = () => {
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     axios
-      .get("https://promanage-fpft.onrender.com/users")
+      .get("https://promanage-fpft.onrender.com/project")
       .then((res) => {
         console.log(res.data);
-        setEmployees(res.data);
+        setProjects(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -33,34 +33,36 @@ const ManageEmployee = () => {
     Modal.setAppElement(document.body);
   }, []);
 
-  const [newEmployee, setNewEmployee] = useState({
-    displayName: "",
-    designation: "",
-    yearsOfExperience: "",
+  const [newProject, setNewProject] = useState({
+    name: "",
+    description: "",
+    status: "",
+    estimatedDeliveryTime: "",
+    startDate: "",
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingEmployee, setEditingEmployee] = useState(null); // Track the edited employee
+  const [editingProject, setEditingProject] = useState(null); // Track the edited project
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewEmployee({
-      ...newEmployee,
+    setNewProject({
+      ...newProject,
       [name]: value,
     });
   };
 
-  const openModal = (employee) => {
+  const openModal = (project) => {
     setIsModalOpen(true);
-    if (employee) {
-      setEditingEmployee(employee); // Set the employee to edit
-      setNewEmployee({ ...employee }); // Initialize the form fields with employee data
+    if (project) {
+      setEditingProject(project); // Set the project to edit
+      setNewProject({ ...project }); // Initialize the form fields with project data
     } else {
-      setEditingEmployee(null); // Reset editingEmployee when adding a new one
-      setNewEmployee({
-        displayName: "",
-        designation: "",
-        yearsOfExperience: "",
+      setEditingProject(null); // Reset editingProjects when adding a new one
+      setNewProject({
+        name: "",
+        description: "",
+        status: "",
       });
     }
   };
@@ -69,22 +71,22 @@ const ManageEmployee = () => {
     setIsModalOpen(false);
   };
 
-  const addEmployee = () => {
-    setEmployees([...employees, newEmployee]);
+  const addProject = () => {
+    setProjects([...projects, newProject]);
     closeModal();
   };
 
-  const updateEmployee = () => {
-    const updatedEmployees = employees.map((emp) =>
-      emp === editingEmployee ? newEmployee : emp
+  const updateProject = () => {
+    const updatedProject = projects.map((proj) =>
+      proj === editingProject ? newProject : proj
     );
-    setEmployees(updatedEmployees);
+    setProjects(updatedProject);
     closeModal();
   };
 
-  const deleteEmployee = (employee) => {
-    const updatedEmployees = employees.filter((emp) => emp !== employee);
-    setEmployees(updatedEmployees);
+  const deleteProject = (project) => {
+    const updatedProjects = projects.filter((proj) => proj !== project);
+    setProjects(updatedProjects);
   };
 
   return (
@@ -94,7 +96,7 @@ const ManageEmployee = () => {
           <div className="table-title">
             <div className="row">
               <div className="col-sm-8">
-                <h2>Employee Details</h2>
+                <h2>Projects Details</h2>
               </div>
               <div className="col-sm-4">
                 <button
@@ -110,30 +112,30 @@ const ManageEmployee = () => {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th>Display Name</th>
-                <th>Designation</th>
-                <th>Years Of Experience</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee, index) => (
+              {projects.map((project, index) => (
                 <tr key={index}>
-                  <td>{employee.displayName}</td>
-                  <td>{employee.designation}</td>
-                  <td>{employee.yearsOfExperience}</td>
+                  <td>{project.name}</td>
+                  <td>{project.description}</td>
+                  <td>{project.status}</td>
                   <td>
                     <a
                       className="edit"
                       title="Edit"
-                      onClick={() => openModal(employee)}
+                      onClick={() => openModal(project)}
                     >
                       <i className="material-icons">&#xE254;</i> Edit
                     </a>
                     <a
                       className="delete"
                       title="Delete"
-                      onClick={() => deleteEmployee(employee)}
+                      onClick={() => deleteProject(project)}
                     >
                       <i className="material-icons">&#xE872;</i> Delete
                     </a>
@@ -148,74 +150,66 @@ const ManageEmployee = () => {
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        contentLabel="Employee Modal"
+        contentLabel="Projects Modal"
         style={modalCustomStyles}
       >
-        <h2>{editingEmployee ? "Edit Employee" : "Add New Employee"}</h2>
+        <h2>{editingProject ? "Edit Projects" : "Add New Projects"}</h2>
         <form>
           <div className="form-group">
-            <label htmlFor="displayName">Display Name</label>
+            <label htmlFor="name">Name</label>
             <input
               type="text"
               className="form-control"
-              id="displayName"
-              name="displayName"
+              id="name"
+              name="name"
+              value={editingProject ? editingProject.name : newProject.name}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Description</label>
+            <input
+              type="text"
+              className="form-control"
+              id="description"
+              name="description"
               value={
-                editingEmployee
-                  ? editingEmployee.displayName
-                  : newEmployee.displayName
+                editingProject
+                  ? editingProject.description
+                  : newProject.description
               }
               onChange={handleInputChange}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="designation">Designation</label>
+            <label htmlFor="status">Status</label>
             <input
               type="text"
               className="form-control"
-              id="designation"
-              name="designation"
-              value={
-                editingEmployee
-                  ? editingEmployee.designation
-                  : newEmployee.designation
-              }
+              id="status"
+              name="status"
+              value={editingProject ? editingProject.status : newProject.status}
               onChange={handleInputChange}
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="yearsOfExperience">Years Of Experience</label>
-            <input
-              type="text"
-              className="form-control"
-              id="yearsOfExperience"
-              name="yearsOfExperience"
-              value={
-                editingEmployee
-                  ? editingEmployee.yearsOfExperience
-                  : newEmployee.yearsOfExperience
-              }
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          {editingEmployee ? (
+          {editingProject ? (
             <button
               type="button"
               className="btn btn-success"
-              onClick={updateEmployee}
+              onClick={updateProject}
             >
-              Update Employee
+              Update Projects
             </button>
           ) : (
             <button
               type="button"
               className="btn btn-success"
-              onClick={addEmployee}
+              onClick={addProject}
             >
-              Add Employee
+              Add Projects
             </button>
           )}
           <button
@@ -231,4 +225,4 @@ const ManageEmployee = () => {
   );
 };
 
-export default ManageEmployee;
+export default ManageProjects;
