@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
@@ -13,23 +14,19 @@ const modalCustomStyles = {
 };
 
 const ManageEmployee = () => {
-  const [employees, setEmployees] = useState([
-    {
-      name: "John Doe",
-      department: "Administration",
-      phone: "(171) 555-2222",
-    },
-    {
-      name: "Peter Parker",
-      department: "Customer Service",
-      phone: "(313) 555-5735",
-    },
-    {
-      name: "Fran Wilson",
-      department: "Human Resources",
-      phone: "(503) 555-9931",
-    },
-  ]);
+  const [employees, setEmployees] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://promanage-fpft.onrender.com/users")
+      .then((res) => {
+        console.log(res.data);
+        setEmployees(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     // This code will run only on the client side
@@ -116,17 +113,17 @@ const ManageEmployee = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Department</th>
-                <th>Phone</th>
+                <th>Designation</th>
+                <th>Yoe</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {employees.map((employee, index) => (
                 <tr key={index}>
-                  <td>{employee.name}</td>
-                  <td>{employee.department}</td>
-                  <td>{employee.phone}</td>
+                  <td>{employee.displayName}</td>
+                  <td>{employee.displayName}</td>
+                  <td>{employee.displayName}</td>
                   <td>
                     <a
                       className="edit"
