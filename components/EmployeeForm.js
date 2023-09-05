@@ -1,14 +1,7 @@
 // components/EmployeeForm.js
 import React, { useState } from "react";
 import axios from "axios";
-
-const proficiencyLevels = [
-  { value: "amateur", label: "Amateur" },
-  { value: "basic", label: "Basic" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "advanced", label: "Advanced" },
-  { value: "expert", label: "Expert" },
-];
+import { ProficiencyRating } from "../constants";
 
 const EmployeeForm = () => {
   const currentUser = {};
@@ -198,7 +191,7 @@ const EmployeeForm = () => {
               onChange={handleSkillInputChange}
               className="form-select"
             >
-              {proficiencyLevels.map((level) => (
+              {Object.values(ProficiencyRating)?.map((level) => (
                 <option key={level.value} value={level.value}>
                   {level.label}
                 </option>

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React from "react";
 
-const ProjectDetails = ({ project }) => {
+const ProjectDetails = ({ project, projectUsers }) => {
   return (
     <div>
       <h1>Project Details</h1>
@@ -28,7 +28,7 @@ const ProjectDetails = ({ project }) => {
       <div className="mb-3">
         <strong>End Date:</strong> {project.endDate}
       </div>
-      {project?.employees ? (
+      {projectUsers.length > 0 ? (
         <div className="mb-3">
           <h2>Employees</h2>
           <table className="table table-bordered">
@@ -40,17 +40,20 @@ const ProjectDetails = ({ project }) => {
               </tr>
             </thead>
             <tbody>
-              {project.employees.map((employee, index) => (
-                <tr key={index}>
-                  <td>
-                    <Link href={`../employee/${employee.id}`}>
-                      {employee.name}
-                    </Link>
-                  </td>
-                  <td>{employee.email}</td>
-                  <td>{employee.designation}</td>
-                </tr>
-              ))}
+              {projectUsers.map((projectUser, index) => {
+                let employee = projectUser.userId;
+                return (
+                  <tr key={index}>
+                    <td>
+                      <Link href={`../employee/${employee._id}`}>
+                        {employee.displayName}
+                      </Link>
+                    </td>
+                    <td>{employee.email}</td>
+                    <td>{employee.designation}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

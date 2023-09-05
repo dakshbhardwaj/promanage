@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { ProficiencyRating } from "../constants.js";
 
 const EmployeeDetails = ({ employee }) => {
   return employee.user ? (
@@ -34,7 +35,7 @@ const EmployeeDetails = ({ employee }) => {
                 <tr key={index}>
                   <td>{skill.language}</td>
                   <td>{skill.yearsOfExperience} years</td>
-                  <td>{skill.proficiency}</td>
+                  <td>{ProficiencyRating?.[skill?.rating ?? "1"]?.label}</td>
                 </tr>
               ))}
             </tbody>

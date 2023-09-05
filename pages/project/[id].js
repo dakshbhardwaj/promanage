@@ -6,6 +6,7 @@ import axios from "axios";
 const ProjectPage = () => {
   const router = useRouter();
   const [project, setProject] = useState({});
+  const [projectUsers, setProjectUsers] = useState({});
 
   useEffect(() => {
     axios
@@ -17,11 +18,22 @@ const ProjectPage = () => {
       .catch((err) => {
         console.log(err);
       });
+    axios
+      .get(
+        `https://promanage-fpft.onrender.com/project-user/${router.query.id}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setProjectUsers(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [router]);
 
   return (
     <div>
-      <ProjectDetails project={project} />
+      <ProjectDetails project={project} projectUsers={projectUsers} />
     </div>
   );
 };
