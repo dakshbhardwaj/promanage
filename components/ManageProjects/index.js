@@ -1,4 +1,6 @@
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
@@ -15,6 +17,7 @@ const modalCustomStyles = {
 
 const ManageProjects = () => {
   const [projects, setProjects] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     axios
@@ -54,19 +57,8 @@ const ManageProjects = () => {
 
   const openModal = (project) => {
     setIsModalOpen(true);
-    if (project) {
-      setEditingProject(project); // Set the project to edit
-      setNewProject({ ...project }); // Initialize the form fields with project data
-    } else {
-      setEditingProject(null); // Reset editingProjects when adding a new one
-      setNewProject({
-        name: "",
-        description: "",
-        status: "",
-        estimatedDeliveryTime: "",
-        startDate: "",
-      });
-    }
+    setEditingProject(project); // Set the project to edit
+    setNewProject({ ...project }); // Initialize the form fields with project data
   };
 
   const closeModal = () => {
@@ -104,7 +96,9 @@ const ManageProjects = () => {
                 <button
                   type="button"
                   className="btn btn-info add-new"
-                  onClick={() => openModal(null)}
+                  onClick={() => {
+                    router.push("../admin");
+                  }}
                 >
                   Add New
                 </button>
@@ -125,7 +119,11 @@ const ManageProjects = () => {
             <tbody>
               {projects.map((project, index) => (
                 <tr key={index}>
-                  <td>{project.name}</td>
+                  <td>
+                    <Link href={`../project/${project._id}`}>
+                      {project.name}
+                    </Link>
+                  </td>
                   <td>{project.description}</td>
                   <td>{project.status}</td>
                   <td>{project.estimatedDeliveryTime}</td>
@@ -159,7 +157,7 @@ const ManageProjects = () => {
         contentLabel="Projects Modal"
         style={modalCustomStyles}
       >
-        <h2>{editingProject ? "Edit Projects" : "Add New Projects"}</h2>
+        <h2>{"Edit Project"}</h2>
         <form>
           <div className="form-group">
             <label htmlFor="name">Name</label>
@@ -168,7 +166,7 @@ const ManageProjects = () => {
               className="form-control"
               id="name"
               name="name"
-              value={editingProject ? editingProject.name : newProject.name}
+              value={editingProject?.name ?? ""}
               onChange={handleInputChange}
               required
             />
@@ -180,11 +178,7 @@ const ManageProjects = () => {
               className="form-control"
               id="description"
               name="description"
-              value={
-                editingProject
-                  ? editingProject.description
-                  : newProject.description
-              }
+              value={editingProject?.description ?? ""}
               onChange={handleInputChange}
               required
             />
@@ -196,7 +190,7 @@ const ManageProjects = () => {
               className="form-control"
               id="status"
               name="status"
-              value={editingProject ? editingProject.status : newProject.status}
+              value={editingProject?.status ?? ""}
               onChange={handleInputChange}
               required
             />
@@ -210,11 +204,7 @@ const ManageProjects = () => {
               className="form-control"
               id="estimatedDeliveryTime"
               name="estimatedDeliveryTime"
-              value={
-                editingProject
-                  ? editingProject.estimatedDeliveryTime
-                  : newProject.estimatedDeliveryTime
-              }
+              value={editingProject?.estimatedDeliveryTime ?? ""}
               onChange={handleInputChange}
               required
             />
@@ -226,30 +216,19 @@ const ManageProjects = () => {
               className="form-control"
               id="startDate"
               name="startDate"
-              value={
-                editingProject ? editingProject.startDate : newProject.startDate
-              }
+              value={editingProject?.startDate ?? ""}
               onChange={handleInputChange}
               required
             />
           </div>
-          {editingProject ? (
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={updateProject}
-            >
-              Update Projects
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={addProject}
-            >
-              Add Projects
-            </button>
-          )}
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={updateProject}
+          >
+            Update Projects
+          </button>
+
           <button
             type="button"
             className="btn btn-secondary"

@@ -19,7 +19,7 @@ function AddProjectForm() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [estimatedDeliveryDate, setEstimatedDeliveryDate] = useState("");
-  const [showSuggestions, setShowSuggestion] = useState(true);
+  const [showSuggestions, setShowSuggestion] = useState(false);
 
   const [errors, setErrors] = useState({});
   const [employees, setEmployees] = useState([

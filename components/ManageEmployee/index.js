@@ -1,4 +1,5 @@
 import axios from "axios";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
@@ -119,7 +120,11 @@ const ManageEmployee = () => {
             <tbody>
               {employees.map((employee, index) => (
                 <tr key={index}>
-                  <td>{employee.displayName}</td>
+                  <td>
+                    <Link href={`../employee/${employee._id}`}>
+                      {employee.displayName}
+                    </Link>
+                  </td>
                   <td>{employee.designation}</td>
                   <td>{employee.yearsOfExperience}</td>
                   <td>
