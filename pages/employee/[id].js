@@ -12,6 +12,7 @@ const EmployeePage = () => {
       .get(`https://promanage-fpft.onrender.com/user/${router.query.id}`)
       .then((res) => {
         console.log(res.data);
+        print(res.data);
         setEmployee(res.data);
       })
       .catch((err) => {

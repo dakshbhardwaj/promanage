@@ -2,22 +2,21 @@ import Link from "next/link";
 import React from "react";
 
 const EmployeeDetails = ({ employee }) => {
-  console.log({ employee });
-  return (
+  return employee.user ? (
     <div>
       <h1>Employee Details</h1>
       <div className="mb-3">
-        <strong>Name:</strong> {employee.user.displayName}
+        <strong>Name:</strong> {employee.user?.displayName ?? ""}
       </div>
       <div className="mb-3">
-        <strong>Email:</strong> {employee.user.email}
+        <strong>Email:</strong> {employee.user?.email ?? ""}
       </div>
       <div className="mb-3">
-        <strong>Years of Experience:</strong> {employee.user.yearsOfExperience}{" "}
-        years
+        <strong>Years of Experience:</strong>{" "}
+        {employee.user?.yearsOfExperience ?? 0} years
       </div>
       <div className="mb-3">
-        <strong>Designation:</strong> {employee.user.designation}
+        <strong>Designation:</strong> {employee.user?.designation ?? ""}
       </div>
       {employee.skills?.length > 0 ? (
         <div className="mb-3">
@@ -129,6 +128,8 @@ const EmployeeDetails = ({ employee }) => {
         </div>
       ) : null}
     </div>
+  ) : (
+    <div>Loading ...</div>
   );
 };
 

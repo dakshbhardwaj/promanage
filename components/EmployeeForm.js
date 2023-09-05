@@ -1,5 +1,6 @@
 // components/EmployeeForm.js
 import React, { useState } from "react";
+import axios from "axios";
 
 const proficiencyLevels = [
   { value: "amateur", label: "Amateur" },
@@ -10,12 +11,13 @@ const proficiencyLevels = [
 ];
 
 const EmployeeForm = () => {
+  const currentUser = {};
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    yearsOfExperience: "",
-    designation: "",
-    skills: [],
+    name: currentUser?.name ?? "",
+    email: currentUser?.email ?? "",
+    yearsOfExperience: currentUser?.yearsOfExperience ?? "",
+    designation: currentUser?.designation ?? "",
+    skills: currentUser?.skills ?? [],
   });
 
   const [newSkill, setNewSkill] = useState({
@@ -77,8 +79,17 @@ const EmployeeForm = () => {
     });
 
     if (!hasErrors) {
-      // You can handle form submission here, for example, send the data to an API.
-      console.log(formData);
+      axios
+        .put(
+          `https://promanage-fpft.onrender.com/user/${currentUser?._id ?? ""}`,
+          formData
+        )
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
