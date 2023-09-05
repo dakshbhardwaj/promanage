@@ -97,7 +97,7 @@ const ManageProjects = () => {
                   type="button"
                   className="btn btn-info add-new"
                   onClick={() => {
-                    router.push("../admin");
+                    router.push("../add-project");
                   }}
                 >
                   Add New

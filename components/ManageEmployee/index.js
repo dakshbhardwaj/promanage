@@ -1,5 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
@@ -16,6 +17,7 @@ const modalCustomStyles = {
 
 const ManageEmployee = () => {
   const [employees, setEmployees] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     axios
@@ -53,26 +55,12 @@ const ManageEmployee = () => {
 
   const openModal = (employee) => {
     setIsModalOpen(true);
-    if (employee) {
-      setEditingEmployee(employee); // Set the employee to edit
-      setNewEmployee({ ...employee }); // Initialize the form fields with employee data
-    } else {
-      setEditingEmployee(null); // Reset editingEmployee when adding a new one
-      setNewEmployee({
-        displayName: "",
-        designation: "",
-        yearsOfExperience: "",
-      });
-    }
+    setEditingEmployee(employee); // Set the employee to edit
+    setNewEmployee({ ...employee }); // Initialize the form fields with employee data
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  const addEmployee = () => {
-    setEmployees([...employees, newEmployee]);
-    closeModal();
   };
 
   const updateEmployee = () => {
@@ -101,7 +89,9 @@ const ManageEmployee = () => {
                 <button
                   type="button"
                   className="btn btn-info add-new"
-                  onClick={() => openModal(null)}
+                  onClick={() => {
+                    router.push("../create-employee");
+                  }}
                 >
                   Add New
                 </button>
@@ -156,7 +146,7 @@ const ManageEmployee = () => {
         contentLabel="Employee Modal"
         style={modalCustomStyles}
       >
-        <h2>{editingEmployee ? "Edit Employee" : "Add New Employee"}</h2>
+        <h2>{"Edit Employee"}</h2>
         <form>
           <div className="form-group">
             <label htmlFor="displayName">Display Name</label>
@@ -165,11 +155,7 @@ const ManageEmployee = () => {
               className="form-control"
               id="displayName"
               name="displayName"
-              value={
-                editingEmployee
-                  ? editingEmployee.displayName
-                  : newEmployee.displayName
-              }
+              value={editingEmployee?.displayName ?? ""}
               onChange={handleInputChange}
               required
             />
@@ -181,11 +167,7 @@ const ManageEmployee = () => {
               className="form-control"
               id="designation"
               name="designation"
-              value={
-                editingEmployee
-                  ? editingEmployee.designation
-                  : newEmployee.designation
-              }
+              value={editingEmployee?.designation ?? ""}
               onChange={handleInputChange}
               required
             />
@@ -197,32 +179,18 @@ const ManageEmployee = () => {
               className="form-control"
               id="yearsOfExperience"
               name="yearsOfExperience"
-              value={
-                editingEmployee
-                  ? editingEmployee.yearsOfExperience
-                  : newEmployee.yearsOfExperience
-              }
+              value={editingEmployee?.yearsOfExperience ?? ""}
               onChange={handleInputChange}
               required
             />
           </div>
-          {editingEmployee ? (
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={updateEmployee}
-            >
-              Update Employee
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={addEmployee}
-            >
-              Add Employee
-            </button>
-          )}
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={updateEmployee}
+          >
+            Update Employee
+          </button>
           <button
             type="button"
             className="btn btn-secondary"
