@@ -58,14 +58,14 @@ const ManageEmployee = () => {
 
   const updateEmployee = () => {
     axios
-      .put(
-        `https://promanage-fpft.onrender.com/employee/${editingEmployee._id}`,
-        editingEmployee
-      )
+      .put(`https://promanage-fpft.onrender.com/user/${editingEmployee._id}`, {
+        designation: editingEmployee.designation,
+        yearsOfExperience: editingEmployee.yearsOfExperience,
+      })
       .then((res) => {
         console.log(res.data);
         const updatedEmployee = employees.map((emp) =>
-          emp === editingEmployee ? res.data : emp
+          emp._id === editingEmployee._id ? res.data : emp
         );
         setEmployees(updatedEmployee);
       })

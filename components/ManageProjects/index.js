@@ -65,7 +65,7 @@ const ManageProjects = () => {
       .then((res) => {
         console.log(res.data);
         const updatedProject = projects.map((proj) =>
-          proj === editingProject ? res.data : proj
+          proj._id === editingProject._id ? res.data : proj
         );
         setProjects(updatedProject);
       })
