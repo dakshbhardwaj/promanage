@@ -76,8 +76,15 @@ const ManageProjects = () => {
   };
 
   const deleteProject = (project) => {
-    const updatedProjects = projects.filter((proj) => proj !== project);
-    setProjects(updatedProjects);
+    axios
+      .delete(`https://promanage-fpft.onrender.com/project/${project._id}`)
+      .then(() => {
+        const updatedProjects = projects.filter((proj) => proj !== project);
+        setProjects(updatedProjects);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

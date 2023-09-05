@@ -58,10 +58,10 @@ const ManageEmployee = () => {
 
   const updateEmployee = () => {
     axios
-      .put(`https://promanage-fpft.onrender.com/user/${editingEmployee._id}`, {
-        designation: editingEmployee.designation,
-        yearsOfExperience: editingEmployee.yearsOfExperience,
-      })
+      .put(
+        `https://promanage-fpft.onrender.com/user/${editingEmployee._id}`,
+        editingEmployee
+      )
       .then((res) => {
         console.log(res.data);
         const updatedEmployee = employees.map((emp) =>
@@ -76,8 +76,15 @@ const ManageEmployee = () => {
   };
 
   const deleteEmployee = (employee) => {
-    const updatedEmployees = employees.filter((emp) => emp !== employee);
-    setEmployees(updatedEmployees);
+    axios
+      .delete(`https://promanage-fpft.onrender.com/user/${employee._id}`)
+      .then(() => {
+        const updatedEmployees = employees.filter((emp) => emp !== employee);
+        setEmployees(updatedEmployees);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
