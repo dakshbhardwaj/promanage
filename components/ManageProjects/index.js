@@ -63,6 +63,8 @@ const ManageProjects = () => {
         name: "",
         description: "",
         status: "",
+        estimatedDeliveryTime: "",
+        startDate: "",
       });
     }
   };
@@ -115,6 +117,8 @@ const ManageProjects = () => {
                 <th>Name</th>
                 <th>Description</th>
                 <th>Status</th>
+                <th>Estimated Delivery Time</th>
+                <th>Start Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -124,6 +128,8 @@ const ManageProjects = () => {
                   <td>{project.name}</td>
                   <td>{project.description}</td>
                   <td>{project.status}</td>
+                  <td>{project.estimatedDeliveryTime}</td>
+                  <td>{project.startDate}</td>
                   <td>
                     <a
                       className="edit"
@@ -191,6 +197,38 @@ const ManageProjects = () => {
               id="status"
               name="status"
               value={editingProject ? editingProject.status : newProject.status}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="estimatedDeliveryTime">
+              Estimated Delivery Time
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="estimatedDeliveryTime"
+              name="estimatedDeliveryTime"
+              value={
+                editingProject
+                  ? editingProject.estimatedDeliveryTime
+                  : newProject.estimatedDeliveryTime
+              }
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="startDate">Start Date</label>
+            <input
+              type="date"
+              className="form-control"
+              id="startDate"
+              name="startDate"
+              value={
+                editingProject ? editingProject.startDate : newProject.startDate
+              }
               onChange={handleInputChange}
               required
             />
