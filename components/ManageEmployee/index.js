@@ -94,7 +94,7 @@ const ManageEmployee = () => {
           <div className="table-title">
             <div className="row">
               <div className="col-sm">
-                <h2>Employee Details</h2>
+                <h2>Employee List</h2>
               </div>
               {/* <div className="col-md-auto">
                 <button

@@ -94,7 +94,7 @@ const ManageProjects = () => {
           <div className="table-title">
             <div className="row">
               <div className="col-sm">
-                <h2>Projects Details</h2>
+                <h2>Projects List</h2>
               </div>
               <div className="col-md-auto">
                 <button

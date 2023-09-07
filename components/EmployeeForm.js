@@ -20,7 +20,6 @@ const EmployeeForm = () => {
     axios
       .get(userUrl)
       .then((res) => {
-        console.log(res.data);
         let userData = res.data;
         setCurrentUser(userData);
         setFormData({
