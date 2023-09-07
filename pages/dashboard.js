@@ -18,12 +18,11 @@ function Dashboard() {
   useEffect(() => {
     console.log(session);
     if (!session?.user) {
-      // router.push("/");
-      localStorage.setItem("user_id", "64f99a1e86c6020033a94301");
+      router.push("/");
     }
     if (router.asPath) {
       var tab = router.asPath.split("#")[1];
-      setSelectedTab(tab.toLowerCase());
+      setSelectedTab(tab?.toLowerCase() ?? "project");
     }
   }, [session, router]);
 
