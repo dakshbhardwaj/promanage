@@ -93,25 +93,37 @@ const ManageEmployee = () => {
         <div className="table-wrapper">
           <div className="table-title">
             <div className="row">
-              <div className="col-sm-8">
+              <div className="col-sm">
                 <h2>Employee Details</h2>
               </div>
-              <div className="col-sm-4">
+              <div className="col-md-auto">
                 <button
                   type="button"
-                  className="btn btn-info add-new"
+                  className="btn btn-outline-primary"
                   onClick={() => {
                     router.push("../create-employee");
                   }}
                 >
-                  Add New
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-person-add"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+                    <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
+                  </svg>
+                  &nbsp; NEW
                 </button>
               </div>
             </div>
           </div>
-          <table className="table table-bordered">
-            <thead>
+          <table className="table table-hover">
+            <thead className="thead-dark">
               <tr>
+                <th>#</th>
                 <th>Display Name</th>
                 <th>Designation</th>
                 <th>Years Of Experience</th>
@@ -120,28 +132,47 @@ const ManageEmployee = () => {
             </thead>
             <tbody>
               {employees.map((employee, index) => (
-                <tr key={index}>
-                  <td>
-                    <Link href={`../employee/${employee._id}`}>
-                      {employee.displayName}
-                    </Link>
-                  </td>
+                <tr
+                  key={index}
+                  onClick={() => {
+                    router.push(`../employee/${employee._id}`);
+                  }}
+                >
+                  <td>{index + 1}</td>
+                  <td>{employee.displayName}</td>
                   <td>{employee.designation}</td>
                   <td>{employee.yearsOfExperience}</td>
                   <td>
                     <a
                       className="edit"
                       title="Edit"
-                      onClick={() => openModal(employee)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal(employee);
+                      }}
+                      style={{
+                        padding: 10,
+                        paddingLeft: 0,
+                      }}
                     >
-                      <i className="material-icons">&#xE254;</i> Edit
+                      <i className="material-icons">&#xE254;</i>
                     </a>
                     <a
                       className="delete"
                       title="Delete"
-                      onClick={() => deleteEmployee(employee)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        deleteEmployee(employee);
+                      }}
+                      style={{
+                        padding: 10,
+                      }}
                     >
-                      <i className="material-icons">&#xE872;</i> Delete
+                      <i className="material-icons" color="red">
+                        &#xE872;
+                      </i>
                     </a>
                   </td>
                 </tr>

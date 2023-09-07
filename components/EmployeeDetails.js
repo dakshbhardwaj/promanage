@@ -33,7 +33,7 @@ const EmployeeDetails = ({ employee }) => {
             <tbody>
               {employee.skills.map((skill, index) => (
                 <tr key={index}>
-                  <td>{skill.language}</td>
+                  <td>{skill.skill.name}</td>
                   <td>{skill.yearsOfExperience} years</td>
                   <td>{ProficiencyRating?.[skill?.rating ?? "1"]?.label}</td>
                 </tr>
