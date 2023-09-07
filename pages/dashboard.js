@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ManageEmployee from "../components/ManageEmployee";
 import ManageProjects from "../components/ManageProjects";
 import CreateEmployeePage from "../components/CreateEmployeePage";
+import Image from "next/image";
 
 function Dashboard() {
   const [selectedTab, setSelectedTab] = useState("project");
@@ -14,6 +15,7 @@ function Dashboard() {
   const handleUserDetailsClick = () => setSelectedTab("userDetail");
   const handleActivitiesClick = () => setSelectedTab("activities");
   const router = useRouter();
+  const [user, setUser] = useState(null);
 
   const { data: session } = useSession();
 
@@ -22,6 +24,7 @@ function Dashboard() {
     if (!session?.user) {
       router.push("/");
     }
+    setUser(JSON.parse(localStorage?.getItem?.("user")));
     if (router.asPath) {
       var tab = router.asPath.split("#")[1];
       setSelectedTab(tab?.toLowerCase() ?? "project");
@@ -68,6 +71,13 @@ function Dashboard() {
             role="button"
           >
             Log Out
+            <Image
+              src={user?.image}
+              width={40}
+              height={40}
+              style={{ borderRadius: "50%", marginLeft: "10px" }}
+              alt="profile_iamge"
+            />
           </li>
         </ul>
       </nav>
