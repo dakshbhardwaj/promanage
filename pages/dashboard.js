@@ -23,6 +23,7 @@ function Dashboard() {
   }, [session, router]);
 
   const handleSignOut = async () => {
+    localStorage.removeItem("user_id");
     await signOut();
     router.push("/");
   };
