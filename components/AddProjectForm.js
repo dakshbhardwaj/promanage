@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
 
@@ -23,53 +23,22 @@ function AddProjectForm() {
   const [showSuggestions, setShowSuggestion] = useState(false);
 
   const [errors, setErrors] = useState({});
-  const [employees, setEmployees] = useState([
-    {
-      id: "1",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      designation: "Software Engineer",
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      designation: "UI Designer",
-    },
-    {
-      id: "3",
-      name: "Bob Johnson",
-      email: "bob.johnson@example.com",
-      designation: "Project Manager",
-    },
-  ]);
+  const [employees, setEmployees] = useState([]);
+  const [project, setProject] = useState();
 
-  const newEmployeesList = [
-    {
-      id: "1",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      designation: "Software Engineer",
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      designation: "UI Designer",
-    },
-    {
-      id: "3",
-      name: "Bob Johnson",
-      email: "bob.johnson@example.com",
-      designation: "Project Manager",
-    },
-    {
-      id: "4",
-      name: "Johnson",
-      email: "bob.johnson@example.com",
-      designation: "Project Manager",
-    },
-  ];
+  const [newEmployeesList, setNewEmployeesList] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://promanage-fpft.onrender.com/users")
+      .then((res) => {
+        console.log(res.data);
+        setNewEmployeesList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   let [acceptedEmployees, setAcceptedEmployee] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -120,14 +89,17 @@ function AddProjectForm() {
         .post("https://promanage-fpft.onrender.com/project", formData)
         .then((res) => {
           console.log(res.data);
-          setProjects(res.data);
+          setProject(res.data);
+          axios
+            .get(`https://promanage-fpft.onrender.com/suggest/${res.data._id}`)
+            .then((suggestionRes) => {
+              setShowSuggestion(true);
+              setEmployees(suggestionRes.data.teamMembers);
+            });
         })
         .catch((err) => {
           console.log(err);
         });
-
-      setShowSuggestion(true);
-      console.log("Form data:", formData);
     } else {
       setErrors(newErrors);
     }
@@ -135,14 +107,30 @@ function AddProjectForm() {
 
   const removeEmployee = (employeeId) => {
     const updatedEmployees = employees.filter((emp) => {
-      return emp.id != employeeId;
+      return (emp.userId ?? emp._id) != employeeId;
+    });
+    const updatedAcceptedEmployees = acceptedEmployees.filter((emp) => {
+      return (emp.userId ?? emp._id) != employeeId;
     });
     setEmployees([...updatedEmployees]);
+    axios
+      .post("https://promanage-fpft.onrender.com/project-user", {
+        userIds: updatedAcceptedEmployees,
+        projectId: project._id,
+      })
+      .then(() => {});
+    setAcceptedEmployee([...updatedAcceptedEmployees]);
   };
 
   const acceptEmployee = (employeeId) => {
     acceptedEmployees.push(employeeId);
     setAcceptedEmployee([...acceptedEmployees]);
+    axios
+      .post("https://promanage-fpft.onrender.com/project-user", {
+        userIds: acceptedEmployees,
+        projectId: project._id,
+      })
+      .then(() => {});
   };
 
   const openModal = () => {
@@ -264,11 +252,11 @@ function AddProjectForm() {
       </form>
       {showSuggestions ? (
         <div>
-          <table>
+          <table className="table table-hover">
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Email</th>
+                <th>Years Of Experience</th>
                 <th>Designation</th>
                 <th>Add</th>
                 <th>Remove</th>
@@ -277,17 +265,21 @@ function AddProjectForm() {
             <tbody>
               {employees.map((employee, index) => (
                 <tr key={index}>
-                  <td>{employee.name}</td>
-                  <td>{employee.email}</td>
+                  <td>{employee.displayName}</td>
+                  <td>{employee.yearsOfExperience} years</td>
                   <td>{employee.designation}</td>
                   <td>
                     <button
                       onClick={() => {
-                        acceptEmployee(employee.id);
+                        acceptEmployee(employee.userId ?? employee._id);
                       }}
-                      disabled={acceptedEmployees.includes(employee.id)}
+                      disabled={acceptedEmployees.includes(
+                        employee.userId ?? employee._id
+                      )}
                     >
-                      {acceptedEmployees.includes(employee.id)
+                      {acceptedEmployees.includes(
+                        employee.userId ?? employee._id
+                      )
                         ? "Accepted"
                         : "Accept"}
                     </button>
@@ -295,7 +287,7 @@ function AddProjectForm() {
                   <td>
                     <button
                       onClick={() => {
-                        removeEmployee(employee.id);
+                        removeEmployee(employee.userId ?? employee._id);
                       }}
                     >
                       Remove
@@ -321,34 +313,39 @@ function AddProjectForm() {
           >
             <div>
               {" "}
-              <table>
+              <table className="table table-hover">
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Email</th>
+                    <th>Years Of Experience</th>
                     <th>Designation</th>
                     <th>Add</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {newEmployeesList.map((employee, index) => (
+                  {newEmployeesList.map((newEmployee, index) => (
                     <tr key={index}>
-                      <td>{employee.name}</td>
-                      <td>{employee.email}</td>
-                      <td>{employee.designation}</td>
+                      <td>{newEmployee.displayName}</td>
+                      <td>{newEmployee.yearsOfExperience} years</td>
+                      <td>{newEmployee.designation}</td>
                       <td>
                         <button
                           onClick={() => {
                             if (
-                              employees.some((emp) => emp.id === employee.id)
+                              employees.some(
+                                (emp) =>
+                                  (emp.userId ?? emp._id) === newEmployee._id
+                              )
                             ) {
-                              removeEmployee(employee.id);
+                              removeEmployee(newEmployee._id);
                             } else {
-                              addEmployee(employee);
+                              addEmployee(newEmployee);
                             }
                           }}
                         >
-                          {employees.some((emp) => emp.id === employee.id)
+                          {employees.some(
+                            (emp) => (emp.userId ?? emp._id) === newEmployee._id
+                          )
                             ? "Added"
                             : "Add"}
                         </button>

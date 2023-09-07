@@ -24,7 +24,7 @@ const ProjectPage = () => {
       )
       .then((res) => {
         console.log(res.data);
-        setProjectUsers(res.data);
+        setProjectUsers(res.data.userId);
       })
       .catch((err) => {
         console.log(err);

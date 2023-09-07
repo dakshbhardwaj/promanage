@@ -5,11 +5,11 @@ import ManageEmployee from "../components/ManageEmployee";
 import ManageProjects from "../components/ManageProjects";
 
 function Dashboard() {
-  const [selectedTab, setSelectedTab] = useState("dashboard");
+  const [selectedTab, setSelectedTab] = useState("project");
 
   const handleDashboardClick = () => setSelectedTab("dashboard");
-  const handleProjectsClick = () => setSelectedTab("projects");
-  const handleEmployeesClick = () => setSelectedTab("employees");
+  const handleProjectsClick = () => setSelectedTab("project");
+  const handleEmployeesClick = () => setSelectedTab("employee");
   const handleActivitiesClick = () => setSelectedTab("activities");
   const router = useRouter();
 
@@ -19,6 +19,10 @@ function Dashboard() {
     console.log(session);
     if (!session?.user) {
       router.push("/");
+    }
+    if (router.asPath) {
+      var tab = router.asPath.split("#")[1];
+      setSelectedTab(tab?.toLowerCase() ?? "project");
     }
   }, [session, router]);
 
@@ -73,25 +77,12 @@ function Dashboard() {
               <ul className="nav flex-column">
                 <li
                   className={`nav-item ${
-                    selectedTab === "dashboard" && "active"
+                    selectedTab === "project" && "active"
                   }`}
                 >
                   <a
                     className="nav-link"
-                    href="#"
-                    onClick={handleDashboardClick}
-                  >
-                    {/* Your dashboard tab content */}
-                  </a>
-                </li>
-                <li
-                  className={`nav-item ${
-                    selectedTab === "projects" && "active"
-                  }`}
-                >
-                  <a
-                    className="nav-link"
-                    href="#"
+                    href="#Project"
                     onClick={handleProjectsClick}
                   >
                     Manage Projects
@@ -99,12 +90,12 @@ function Dashboard() {
                 </li>
                 <li
                   className={`nav-item ${
-                    selectedTab === "employees" && "active"
+                    selectedTab === "employee" && "active"
                   }`}
                 >
                   <a
                     className="nav-link"
-                    href="#"
+                    href="#Employee"
                     onClick={handleEmployeesClick}
                   >
                     Manage Employees
@@ -129,17 +120,12 @@ function Dashboard() {
         </nav>
 
         <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          {selectedTab === "dashboard" && (
-            <div>
-              <h2>My Dashboard content</h2>
-            </div>
-          )}
-          {selectedTab === "projects" && (
+          {selectedTab === "project" && (
             <div>
               <ManageProjects />
             </div>
           )}
-          {selectedTab === "employees" && (
+          {selectedTab === "employee" && (
             <div>
               <ManageEmployee />
             </div>
