@@ -18,7 +18,8 @@ function Dashboard() {
   useEffect(() => {
     console.log(session);
     if (!session?.user) {
-      router.push("/");
+      // router.push("/");
+      localStorage.setItem("user_id", "64f99a1e86c6020033a94301");
     }
   }, [session, router]);
 

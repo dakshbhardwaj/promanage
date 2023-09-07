@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ProficiencyRating } from "../constants";
 import Modal from "react-modal";
+import { getRatingFromProficiency } from "../utils";
 
 const modalCustomStyles = {
   content: {
@@ -16,9 +17,6 @@ const modalCustomStyles = {
 };
 
 const EmployeeForm = () => {
-  const userUrl =
-    "https://promanage-fpft.onrender.com/user/64f96fe4e06255003378de58";
-
   useEffect(() => {
     Modal.setAppElement(document.body);
   }, []);
@@ -35,6 +33,9 @@ const EmployeeForm = () => {
   const [currentUser, setCurrentUser] = useState({});
 
   useEffect(() => {
+    const userUrl = `https://promanage-fpft.onrender.com/user/${localStorage.getItem(
+      "user_id"
+    )}`;
     axios
       .get(userUrl)
       .then((res) => {
@@ -55,7 +56,7 @@ const EmployeeForm = () => {
 
   const [newSkill, setNewSkill] = useState({
     language: "",
-    yearsOfExperience: "",
+    yearsOfExperience: 0,
     proficiency: "amateur",
   });
 
@@ -72,7 +73,7 @@ const EmployeeForm = () => {
   const openModal = () => {
     setNewSkill({
       language: "",
-      yearsOfExperience: "",
+      yearsOfExperience: 0,
       proficiency: "amateur",
     });
     setIsModalOpen(true);
@@ -89,11 +90,9 @@ const EmployeeForm = () => {
       newSkill.proficiency
     ) {
       let skill = {
-        skill: {
-          name: newSkill.language,
-        },
-        rating: newSkill.proficiency,
-        yearsOfExperience: newSkill.yearsOfExperience,
+        name: newSkill.language,
+        rating: getRatingFromProficiency(newSkill.proficiency),
+        yoe: parseFloat(newSkill.yearsOfExperience ?? 0),
       };
       setFormData({
         ...formData,
@@ -101,7 +100,7 @@ const EmployeeForm = () => {
       });
       setNewSkill({
         language: "",
-        yearsOfExperience: "",
+        yearsOfExperience: 0,
         proficiency: "amateur",
       });
       closeModal();
@@ -133,9 +132,12 @@ const EmployeeForm = () => {
     });
 
     if (!hasErrors) {
+      console.log({ currentUser });
       axios
         .put(
-          `https://promanage-fpft.onrender.com/user/${currentUser?._id ?? ""}`,
+          `https://promanage-fpft.onrender.com/user/${
+            currentUser?.user?._id ?? ""
+          }`,
           formData
         )
         .then((res) => {
@@ -237,8 +239,8 @@ const EmployeeForm = () => {
             {formData.skills.map((skill, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>{skill.skill.name}</td>
-                <td>{skill.yearsOfExperience} years</td>
+                <td>{skill?.skill?.name ?? skill?.name}</td>
+                <td>{skill.yearsOfExperience ?? newSkill.yoe} years</td>
                 <td>{ProficiencyRating?.[skill?.rating ?? "1"]?.label}</td>
               </tr>
             ))}
