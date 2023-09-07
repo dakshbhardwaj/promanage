@@ -96,7 +96,7 @@ const ManageEmployee = () => {
               <div className="col-sm">
                 <h2>Employee Details</h2>
               </div>
-              <div className="col-md-auto">
+              {/* <div className="col-md-auto">
                 <button
                   type="button"
                   className="btn btn-outline-primary"
@@ -117,7 +117,7 @@ const ManageEmployee = () => {
                   </svg>
                   &nbsp; NEW
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <table className="table table-hover">
@@ -143,7 +143,7 @@ const ManageEmployee = () => {
                   <td>{employee.designation}</td>
                   <td>{employee.yearsOfExperience}</td>
                   <td>
-                    <a
+                    {/* <a
                       className="edit"
                       title="Edit"
                       onClick={(e) => {
@@ -157,7 +157,7 @@ const ManageEmployee = () => {
                       }}
                     >
                       <i className="material-icons">&#xE254;</i>
-                    </a>
+                    </a> */}
                     <a
                       className="delete"
                       title="Delete"

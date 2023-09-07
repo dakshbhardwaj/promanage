@@ -84,7 +84,7 @@ function Dashboard() {
                     Manage Employees
                   </a>
                 </li>
-                <li
+                {/* <li
                   className={`nav-item ${
                     selectedTab === "activities" && "active"
                   }`}
@@ -96,7 +96,7 @@ function Dashboard() {
                   >
                     Employee Activities
                   </a>
-                </li>
+                </li> */}
               </ul>
             </ul>
           </div>
@@ -118,7 +118,7 @@ function Dashboard() {
               <ManageEmployee />
             </div>
           )}
-          {selectedTab === "activities" && <div>Activities</div>}
+          {/* {selectedTab === "activities" && <div>Activities</div>} */}
         </main>
       </div>
     </div>
