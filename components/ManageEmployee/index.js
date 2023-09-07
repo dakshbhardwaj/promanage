@@ -17,6 +17,7 @@ const modalCustomStyles = {
 
 const ManageEmployee = () => {
   const [employees, setEmployees] = useState([]);
+  const [user, setUser] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +30,10 @@ const ManageEmployee = () => {
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage?.getItem?.("user")));
   }, []);
 
   useEffect(() => {
@@ -126,9 +131,7 @@ const ManageEmployee = () => {
                 <th>Display Name</th>
                 <th>Designation</th>
                 <th>Years Of Experience</th>
-                {JSON.parse(localStorage?.getItem?.("user"))?.isAdmin ? (
-                  <th>Actions</th>
-                ) : null}
+                {user?.isAdmin ? <th>Actions</th> : null}
               </tr>
             </thead>
             <tbody>
@@ -143,7 +146,7 @@ const ManageEmployee = () => {
                   <td>{employee.displayName}</td>
                   <td>{employee.designation}</td>
                   <td>{employee.yearsOfExperience}</td>
-                  {JSON.parse(localStorage?.getItem?.("user"))?.isAdmin ? (
+                  {user?.isAdmin ? (
                     <td>
                       {/* <a
                       className="edit"

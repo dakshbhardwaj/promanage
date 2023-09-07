@@ -18,7 +18,14 @@ const modalCustomStyles = {
 
 const ManageProjects = () => {
   const [projects, setProjects] = useState([]);
+  const [user, setUser] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage?.getItem?.("user")));
+  }, []);
+
+  console.log(user);
 
   useEffect(() => {
     axios
@@ -97,7 +104,7 @@ const ManageProjects = () => {
               <div className="col-sm">
                 <h2>Projects List</h2>
               </div>
-              {JSON.parse(localStorage?.getItem?.("user"))?.isAdmin ? (
+              {user?.isAdmin ? (
                 <div className="col-md-auto">
                   <button
                     type="button"
@@ -132,9 +139,7 @@ const ManageProjects = () => {
                 <th>Status</th>
                 <th>Estimated Delivery Time</th>
                 <th>Start Date</th>
-                {JSON.parse(localStorage?.getItem?.("user"))?.isAdmin ? (
-                  <th>Actions</th>
-                ) : null}
+                {user?.isAdmin ? <th>Actions</th> : null}
               </tr>
             </thead>
             <tbody>
@@ -151,8 +156,7 @@ const ManageProjects = () => {
                   <td>{project.status}</td>
                   <td>{project.estimatedDeliveryTime}</td>
                   <td>{convertISODateToCustomFormat(project.startDate)}</td>
-                  {localStorage &&
-                  JSON.parse(localStorage?.getItem?.("user"))?.isAdmin ? (
+                  {user && user?.isAdmin ? (
                     <td>
                       <a
                         className="edit"

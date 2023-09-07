@@ -32,28 +32,6 @@ const EmployeeForm = () => {
   });
   const [currentUser, setCurrentUser] = useState({});
 
-  useEffect(() => {
-    const userUrl = `https://promanage-fpft.onrender.com/user/${
-      JSON.parse(localStorage?.getItem?.("user"))?._id
-    }`;
-    axios
-      .get(userUrl)
-      .then((res) => {
-        let userData = res.data;
-        setCurrentUser(userData);
-        setFormData({
-          name: userData?.user?.displayName ?? "",
-          email: userData?.user?.email ?? "",
-          yearsOfExperience: userData?.user?.yearsOfExperience ?? "",
-          designation: userData?.user?.designation ?? "",
-          skills: userData?.skills ?? [],
-        });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
-
   const [newSkill, setNewSkill] = useState({
     language: "",
     yearsOfExperience: 0,
@@ -82,6 +60,22 @@ const EmployeeForm = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    let localUser = localStorage?.getItem?.("user");
+
+    setCurrentUser(JSON.parse(localUser));
+
+    console.log("checj check", JSON.parse(localUser));
+    localUser = JSON.parse(localUser);
+    setFormData({
+      name: localUser?.displayName ?? "",
+      email: localUser?.email ?? "",
+      yearsOfExperience: localUser?.yearsOfExperience ?? "",
+      designation: localUser?.designation ?? "",
+      skills: localUser?.skills ?? [],
+    });
+  }, []);
 
   const addSkill = () => {
     if (
