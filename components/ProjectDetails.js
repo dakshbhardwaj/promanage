@@ -29,7 +29,7 @@ const ProjectDetails = ({ project, projectUsers }) => {
       <div className="mb-3">
         <strong>End Date:</strong> {project.endDate}
       </div>
-      {projectUsers.length > 0 ? (
+      {projectUsers?.length > 0 ? (
         <div className="mb-3">
           <h2>Employees</h2>
           <table className="table table-hover">
