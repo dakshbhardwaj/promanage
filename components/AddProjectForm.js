@@ -195,22 +195,39 @@ function AddProjectForm() {
           />
           {errors.company && <p className="text-danger">{errors.company}</p>}
         </div>
-        <div className="form-group">
-          <label htmlFor="startDate" className="form-label">
-            Start Date
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            id="startDate"
-            placeholder="Enter start date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            disabled={showSuggestions}
-          />
-          {errors.startDate && (
-            <p className="text-danger">{errors.startDate}</p>
-          )}
+        <div className="form-row row g-2">
+          <div className="form-group col-md-6">
+            <label htmlFor="startDate" className="form-label">
+              Start Date
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="startDate"
+              placeholder="Enter start date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              disabled={showSuggestions}
+            />
+            {errors.startDate && (
+              <p className="text-danger">{errors.startDate}</p>
+            )}
+          </div>
+          <div className="form-group col-md-6">
+            <label htmlFor="endDate" className="form-label">
+              End Date
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="endDate"
+              placeholder="Enter end date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              disabled={showSuggestions}
+            />
+            {errors.endDate && <p className="text-danger">{errors.endDate}</p>}
+          </div>
         </div>
 
         <div className="form-group">
@@ -231,21 +248,6 @@ function AddProjectForm() {
           )}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="endDate" className="form-label">
-            End Date
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            id="endDate"
-            placeholder="Enter end date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            disabled={showSuggestions}
-          />
-          {errors.endDate && <p className="text-danger">{errors.endDate}</p>}
-        </div>
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
