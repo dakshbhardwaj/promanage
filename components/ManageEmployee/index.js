@@ -63,7 +63,6 @@ const ManageEmployee = () => {
         editingEmployee
       )
       .then((res) => {
-        console.log(res.data);
         const updatedEmployee = employees.map((emp) =>
           emp._id === editingEmployee._id ? res.data : emp
         );
