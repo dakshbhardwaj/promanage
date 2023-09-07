@@ -17,6 +17,7 @@ const modalCustomStyles = {
 
 const ManageEmployee = () => {
   const [employees, setEmployees] = useState([]);
+  const [user, setUser] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +30,10 @@ const ManageEmployee = () => {
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage?.getItem?.("user")));
   }, []);
 
   useEffect(() => {
@@ -126,7 +131,7 @@ const ManageEmployee = () => {
                 <th>Display Name</th>
                 <th>Designation</th>
                 <th>Years Of Experience</th>
-                <th>Actions</th>
+                {user?.isAdmin ? <th>Actions</th> : null}
               </tr>
             </thead>
             <tbody>
@@ -141,8 +146,9 @@ const ManageEmployee = () => {
                   <td>{employee.displayName}</td>
                   <td>{employee.designation}</td>
                   <td>{employee.yearsOfExperience}</td>
-                  <td>
-                    {/* <a
+                  {user?.isAdmin ? (
+                    <td>
+                      {/* <a
                       className="edit"
                       title="Edit"
                       onClick={(e) => {
@@ -157,24 +163,25 @@ const ManageEmployee = () => {
                     >
                       <i className="material-icons">&#xE254;</i>
                     </a> */}
-                    <a
-                      className="delete"
-                      title="Delete"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        deleteEmployee(employee);
-                      }}
-                      style={{
-                        padding: 10,
-                        paddingLeft: 0,
-                      }}
-                    >
-                      <i className="material-icons" color="red">
-                        &#xE872;
-                      </i>
-                    </a>
-                  </td>
+                      <a
+                        className="delete"
+                        title="Delete"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          deleteEmployee(employee);
+                        }}
+                        style={{
+                          padding: 10,
+                          paddingLeft: 0,
+                        }}
+                      >
+                        <i className="material-icons" color="red">
+                          &#xE872;
+                        </i>
+                      </a>
+                    </td>
+                  ) : null}
                 </tr>
               ))}
             </tbody>

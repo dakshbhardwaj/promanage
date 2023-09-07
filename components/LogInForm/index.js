@@ -43,7 +43,7 @@ function LogInForm({ onSignInClick }) {
         <div className="card-body p-4 p-sm-5  align-items-center">
           <div className="d-grid mb-2">
             <button
-              className="btn btn-outline-primary btn-login text-uppercase"
+              className="btn btn-primary btn-login text-uppercase"
               onClick={(e) => {
                 e.preventDefault();
                 onSignInClick();
