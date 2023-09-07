@@ -3,6 +3,7 @@ import styles from "../styles/Home.module.css";
 import { useSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import LogInForm from "../components/LogInForm";
 
 const Home = () => {
   const { data: session } = useSession();
@@ -16,17 +17,13 @@ const Home = () => {
   }, [session, router]);
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Pro Manage AI</title>
+        <title>ProManage AI</title>
         <meta name="description" content="ProManage AI" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <nav className={styles.navbar}>
-        <div className={styles.signup}>
-          <button onClick={() => signIn("google")}>Sign in with Google</button>
-        </div>
-      </nav>
+      <LogInForm />
     </div>
   );
 };
