@@ -13,3 +13,12 @@ export function getRatingFromProficiency(proficiency) {
   }
   return 1;
 }
+
+export function convertISODateToCustomFormat(isoDate) {
+  const date = new Date(isoDate);
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Months are zero-based
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}

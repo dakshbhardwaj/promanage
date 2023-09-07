@@ -1,6 +1,7 @@
 // components/ProjectDetails.js
 import { useRouter } from "next/router";
 import React from "react";
+import { convertISODateToCustomFormat } from "../utils";
 
 const ProjectDetails = ({ project, projectUsers }) => {
   const router = useRouter();
@@ -24,10 +25,12 @@ const ProjectDetails = ({ project, projectUsers }) => {
         {project.estimatedDeliveryTime}
       </div>
       <div className="mb-3">
-        <strong>Start Date:</strong> {project.startDate}
+        <strong>Start Date:</strong>{" "}
+        {convertISODateToCustomFormat(project.startDate)}
       </div>
       <div className="mb-3">
-        <strong>End Date:</strong> {project.endDate}
+        <strong>End Date:</strong>{" "}
+        {convertISODateToCustomFormat(project.endDate)}
       </div>
       {projectUsers?.length > 0 ? (
         <div className="mb-3">
