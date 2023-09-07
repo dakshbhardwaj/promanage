@@ -2,6 +2,8 @@ import Link from "next/link";
 import React from "react";
 import { ProficiencyRating } from "../constants.js";
 import { useRouter } from "next/router.js";
+import LottieLoader from "react-lottie-loader";
+import loaderAnimation from "../public/loader-animation.json";
 
 const EmployeeDetails = ({ employee }) => {
   const router = useRouter();
@@ -159,7 +161,20 @@ const EmployeeDetails = ({ employee }) => {
       ) : null}
     </div>
   ) : (
-    <div>Loading ...</div>
+    <div
+      style={{
+        width: "100vh",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <LottieLoader
+        animationData={loaderAnimation}
+        style={{ width: "100px", height: "100px" }}
+      />
+    </div>
   );
 };
 
