@@ -32,7 +32,7 @@ const Home = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Pro Manage AI</title>
         <meta name="description" content="ProManage AI" />
