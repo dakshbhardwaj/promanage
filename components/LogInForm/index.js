@@ -4,13 +4,22 @@ function LogInForm({ onSignInClick }) {
   return (
     <div
       className="container-fluid d-flex justify-content-center align-items-center"
-      style={{ height: "100vh", backgroundColor: "#000000" }}
+      style={{
+        height: "100vh",
+
+        backgroundColor: "#000000",
+        backgroundImage: "url('../../logo_background.jpg')",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        boxShadow: "inset 0 0 0 2000px rgba(0, 0, 0, 0.3)",
+      }}
     >
       <div
         className="card border-0 shadow rounded-3 my-5"
         style={{
           width: 400,
           height: 225,
+          backgroundColor: "#ffffff",
         }}
       >
         <div
