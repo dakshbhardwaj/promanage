@@ -3,7 +3,6 @@ import { useSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import LogInForm from "../components/LogInForm";
-import styles from "../styles/Home.module.css";
 import axios from "axios";
 
 const Home = () => {
