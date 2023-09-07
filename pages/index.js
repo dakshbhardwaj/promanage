@@ -4,14 +4,24 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import LogInForm from "../components/LogInForm";
 import styles from "../styles/Home.module.css";
+import axios from "axios";
 
 const Home = () => {
   const { data: session } = useSession();
   const router = useRouter();
   useEffect(() => {
-    console.log(session);
     if (session && session.user) {
-      router.push("/dashboard");
+      axios
+        .post("https://promanage-fpft.onrender.com/user", {
+          token: session.id_token,
+        })
+        .then((res) => {
+          router.push("/dashboard");
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [session, router]);
 
@@ -28,12 +38,6 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <LogInForm onSignInClick={onSignIn} />
-
-      {/* <nav className={styles.navbar}>
-        <div className={styles.signup}>
-          <button onClick={() => onSignIn()}>Sign in with Google</button>
-        </div>
-      </nav> */}
     </div>
   );
 };
