@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import ManageEmployee from "../components/ManageEmployee";
 import ManageProjects from "../components/ManageProjects";
+import CreateEmployeePage from "../components/CreateEmployeePage";
 
 function Dashboard() {
   const [selectedTab, setSelectedTab] = useState("project");
@@ -10,6 +11,7 @@ function Dashboard() {
   const handleDashboardClick = () => setSelectedTab("dashboard");
   const handleProjectsClick = () => setSelectedTab("project");
   const handleEmployeesClick = () => setSelectedTab("employee");
+  const handleUserDetailsClick = () => setSelectedTab("userDetail");
   const handleActivitiesClick = () => setSelectedTab("activities");
   const router = useRouter();
 
@@ -19,6 +21,10 @@ function Dashboard() {
     console.log(session);
     if (!session?.user) {
       router.push("/");
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({ _id: "64f99a1e86c6020033a94301" })
+      // );
     }
     if (router.asPath) {
       var tab = router.asPath.split("#")[1];
@@ -27,7 +33,7 @@ function Dashboard() {
   }, [session, router]);
 
   const handleSignOut = async () => {
-    localStorage.removeItem("user_id");
+    localStorage.removeItem("user");
     await signOut();
     router.push("/");
   };
@@ -101,6 +107,19 @@ function Dashboard() {
                     Manage Employees
                   </a>
                 </li>
+                <li
+                  className={`nav-item ${
+                    selectedTab === "employee" && "active"
+                  }`}
+                >
+                  <a
+                    className="nav-link"
+                    href="#UserDetail"
+                    onClick={handleUserDetailsClick}
+                  >
+                    Update User Details
+                  </a>
+                </li>
                 {/* <li
                   className={`nav-item ${
                     selectedTab === "activities" && "active"
@@ -128,6 +147,11 @@ function Dashboard() {
           {selectedTab === "employee" && (
             <div>
               <ManageEmployee />
+            </div>
+          )}
+          {selectedTab === "userDetail" && (
+            <div>
+              <CreateEmployeePage />
             </div>
           )}
           {/* {selectedTab === "activities" && <div>Activities</div>} */}
