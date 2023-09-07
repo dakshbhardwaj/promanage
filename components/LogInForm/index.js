@@ -1,6 +1,5 @@
 import React from "react";
-
-function LogInForm() {
+function LogInForm({ onSignInClick }) {
   return (
     <div
       className="container-fluid d-flex justify-content-center align-items-center"
@@ -21,7 +20,10 @@ function LogInForm() {
             <div className="d-grid mb-2">
               <button
                 className="btn btn-outline-primary btn-login text-uppercase"
-                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSignInClick();
+                }}
               >
                 <img
                   width="20px"
