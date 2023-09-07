@@ -5,7 +5,7 @@ import React from "react";
 const ProjectDetails = ({ project, projectUsers }) => {
   const router = useRouter();
   return (
-    <div>
+    <div className="container mt-5">
       <h1>Project Details</h1>
       <div className="mb-3">
         <strong>Project Name:</strong> {project.name}
@@ -44,19 +44,20 @@ const ProjectDetails = ({ project, projectUsers }) => {
             <tbody>
               {projectUsers.map((projectUser, index) => {
                 let employee = projectUser.userId;
-                return (
+                return employee ? (
                   <tr
                     key={index}
                     onClick={() => {
                       router.push(`../employee/${employee._id}`);
                     }}
+                    style={{ cursor: "pointer" }}
                   >
                     <td>{index + 1}</td>
                     <td>{employee.displayName}</td>
                     <td>{employee.email}</td>
                     <td>{employee.designation}</td>
                   </tr>
-                );
+                ) : null;
               })}
             </tbody>
           </table>

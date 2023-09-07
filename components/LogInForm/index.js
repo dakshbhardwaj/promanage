@@ -31,7 +31,7 @@ function LogInForm({ onSignInClick }) {
         >
           <Image
             src="/pro_manage_ai@2x.png"
-            alt="ProManage AI logo"
+            alt="ProManage AI Logo"
             width={222}
             height={36}
             res

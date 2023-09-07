@@ -17,7 +17,7 @@ const Home = () => {
         })
         .then((res) => {
           router.push("/dashboard");
-          localStorage.setItem("user_id", res.data._id);
+          localStorage.setItem("user", res.data);
           console.log(res.data);
         })
         .catch((err) => {

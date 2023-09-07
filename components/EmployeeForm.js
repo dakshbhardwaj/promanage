@@ -33,9 +33,9 @@ const EmployeeForm = () => {
   const [currentUser, setCurrentUser] = useState({});
 
   useEffect(() => {
-    const userUrl = `https://promanage-fpft.onrender.com/user/${localStorage.getItem(
-      "user_id"
-    )}`;
+    const userUrl = `https://promanage-fpft.onrender.com/user/${
+      JSON.parse(localStorage.getItem("user"))._id
+    }`;
     axios
       .get(userUrl)
       .then((res) => {
