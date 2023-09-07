@@ -17,9 +17,9 @@ function Dashboard() {
 
   useEffect(() => {
     console.log(session);
-    // if (!session?.user) {
-    //   router.push("/");
-    // }
+    if (!session?.user) {
+      router.push("/");
+    }
   }, [session, router]);
 
   const handleSignOut = async () => {
