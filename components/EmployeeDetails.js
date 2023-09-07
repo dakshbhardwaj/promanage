@@ -6,26 +6,27 @@ import { useRouter } from "next/router.js";
 const EmployeeDetails = ({ employee }) => {
   const router = useRouter();
   return employee.user ? (
-    <div>
+    <div className="container mt-5">
       <h1>Employee Details</h1>
-      <div className="mb-3">
+      <div className="mb-4">
         <strong>Name:</strong> {employee.user?.displayName ?? ""}
       </div>
-      <div className="mb-3">
+      <div className="mb-4">
         <strong>Email:</strong> {employee.user?.email ?? ""}
       </div>
-      <div className="mb-3">
+      <div className="mb-4">
         <strong>Years of Experience:</strong>{" "}
         {employee.user?.yearsOfExperience ?? 0} years
       </div>
-      <div className="mb-3">
+      <div className="mb-4">
         <strong>Designation:</strong> {employee.user?.designation ?? ""}
       </div>
+
       {employee.skills?.length > 0 ? (
-        <div className="mb-3">
+        <div className="mb-5">
           <h2>Skills</h2>
           <table className="table table-hover">
-            <thead>
+            <thead className="thead-dark">
               <tr>
                 <th>#</th>
                 <th>Language</th>
@@ -46,10 +47,11 @@ const EmployeeDetails = ({ employee }) => {
           </table>
         </div>
       ) : null}
+
       {employee.projects ? (
         <div className="mb-5">
           <h2>Projects</h2>
-          <div>
+          <div className="mb-4">
             <h4>Current Projects</h4>
             <table className="table table-hover">
               <thead className="thead-dark">
@@ -85,7 +87,7 @@ const EmployeeDetails = ({ employee }) => {
               </tbody>
             </table>
           </div>
-          <div>
+          <div className="mb-4">
             <h4>Upcoming Projects</h4>
             <table className="table table-hover">
               <thead className="thead-dark">
@@ -120,7 +122,7 @@ const EmployeeDetails = ({ employee }) => {
               </tbody>
             </table>
           </div>
-          <div>
+          <div className="mb-4">
             <h4>Completed Projects</h4>
             <table className="table table-hover">
               <thead className="thead-dark">
