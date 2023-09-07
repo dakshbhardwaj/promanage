@@ -1,17 +1,40 @@
 // components/EmployeeForm.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ProficiencyRating } from "../constants";
 
 const EmployeeForm = () => {
-  const currentUser = {};
+  const userUrl =
+    "https://promanage-fpft.onrender.com/user/64f96fe4e06255003378de58";
+
   const [formData, setFormData] = useState({
-    name: currentUser?.name ?? "",
-    email: currentUser?.email ?? "",
-    yearsOfExperience: currentUser?.yearsOfExperience ?? "",
-    designation: currentUser?.designation ?? "",
-    skills: currentUser?.skills ?? [],
+    name: "",
+    email: "",
+    yearsOfExperience: "",
+    designation: "",
+    skills: [],
   });
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    axios
+      .get(userUrl)
+      .then((res) => {
+        console.log(res.data);
+        let userData = res.data;
+        setCurrentUser(userData);
+        setFormData({
+          name: userData?.user?.displayName ?? "",
+          email: userData?.user?.email ?? "",
+          yearsOfExperience: userData?.user?.yearsOfExperience ?? "",
+          designation: userData?.user?.designation ?? "",
+          skills: userData?.skills ?? [],
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   const [newSkill, setNewSkill] = useState({
     language: "",
@@ -35,9 +58,16 @@ const EmployeeForm = () => {
       newSkill.yearsOfExperience &&
       newSkill.proficiency
     ) {
+      let skill = {
+        skill: {
+          name: newSkill.language,
+        },
+        rating: newSkill.proficiency,
+        yearsOfExperience: newSkill.yearsOfExperience,
+      };
       setFormData({
         ...formData,
-        skills: [...formData.skills, newSkill],
+        skills: [...formData.skills, skill],
       });
       setNewSkill({
         language: "",
@@ -206,8 +236,8 @@ const EmployeeForm = () => {
           {formData.skills.map((skill, index) => (
             <li key={index} className="list-group-item">
               {index + 1}
-              {")"} {skill.language}, YOE: {skill.yearsOfExperience},
-              Proficiency: {skill.proficiency.toUpperCase()}
+              {")"} {skill?.skill?.name}, YOE: {skill.yearsOfExperience},
+              Proficiency: {skill.rating}
             </li>
           ))}
         </ul>

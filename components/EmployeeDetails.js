@@ -57,18 +57,24 @@ const EmployeeDetails = ({ employee }) => {
               </thead>
               <tbody>
                 {employee.projects
-                  .filter((project) => project.status === "current")
-                  .map((project, index) => (
-                    <tr key={index}>
-                      <td>
-                        <Link href={`../project/${project.id}`}>
-                          {project.name}
-                        </Link>
-                      </td>
-                      <td>In Progress</td>
-                      <td>{project.description}</td>
-                    </tr>
-                  ))}
+
+                  .filter(
+                    (project) => project?.project?.status === "In Progress"
+                  )
+                  .map((projectMap, index) => {
+                    const project = projectMap.project;
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <Link href={`../project/${project._id}`}>
+                            {project.name}
+                          </Link>
+                        </td>
+                        <td>{project.status}</td>
+                        <td>{project.description}</td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
@@ -84,18 +90,23 @@ const EmployeeDetails = ({ employee }) => {
               </thead>
               <tbody>
                 {employee.projects
-                  .filter((project) => project.status === "upcoming")
-                  .map((project, index) => (
-                    <tr key={index}>
-                      <td>
-                        <Link href={`../project/${project.id}`}>
-                          {project.name}
-                        </Link>
-                      </td>
-                      <td>Upcoming</td>
-                      <td>{project.description}</td>
-                    </tr>
-                  ))}
+                  .filter(
+                    (project) => project?.project?.status === "Not Started"
+                  )
+                  .map((projectMap, index) => {
+                    const project = projectMap.project;
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <Link href={`../project/${project._id}`}>
+                            {project.name}
+                          </Link>
+                        </td>
+                        <td>{project.status}</td>
+                        <td>{project.description}</td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
@@ -111,18 +122,21 @@ const EmployeeDetails = ({ employee }) => {
               </thead>
               <tbody>
                 {employee.projects
-                  .filter((project) => project.status === "completed")
-                  .map((project, index) => (
-                    <tr key={index}>
-                      <td>
-                        <Link href={`../project/${project.id}`}>
-                          {project.name}
-                        </Link>
-                      </td>
-                      <td>Completed</td>
-                      <td>{project.description}</td>
-                    </tr>
-                  ))}
+                  .filter((project) => project?.project?.status === "Completed")
+                  .map((projectMap, index) => {
+                    const project = projectMap.project;
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <Link href={`../project/${project._id}`}>
+                            {project.name}
+                          </Link>
+                        </td>
+                        <td>{project.status}</td>
+                        <td>{project.description}</td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>

@@ -168,6 +168,7 @@ const ManageEmployee = () => {
                       }}
                       style={{
                         padding: 10,
+                        paddingLeft: 0,
                       }}
                     >
                       <i className="material-icons" color="red">
