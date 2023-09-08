@@ -272,7 +272,7 @@ const EmployeeForm = () => {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Language</th>
+                  <th>Skill</th>
                   <th>Years of Experience</th>
                   <th>Proficiency</th>
                 </tr>
@@ -319,7 +319,7 @@ const EmployeeForm = () => {
             <form>
               <div className="form-group">
                 <label htmlFor="language" className="form-label">
-                  Language:
+                  Skill:
                 </label>
                 <input
                   type="text"
