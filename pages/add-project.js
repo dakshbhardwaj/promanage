@@ -1,12 +1,33 @@
+import { useRouter } from "next/router";
 import AddProjectForm from "../components/AddProjectForm";
 import styles from "../styles/Home.module.css";
 
 export default function AddProject() {
+  const router = useRouter();
   return (
     <div className="container p-3 vh-100">
       <div className={styles.card}>
         <div className={styles.cardContent}>
-          <h2>Add Project</h2>
+          <h3
+            onClick={() => {
+              router.back();
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="currentColor"
+              class="bi bi-arrow-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+              />
+            </svg>
+            &nbsp; Add Project
+          </h3>
           <AddProjectForm />
         </div>
       </div>

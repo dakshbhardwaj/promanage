@@ -154,7 +154,7 @@ const ManageEmployee = () => {
                   <th>Display Name</th>
                   <th>Designation</th>
                   <th>Years Of Experience</th>
-                  {user?.isAdmin ? <th>Actions</th> : null}
+                  {user?.isAdmin ? <th>Delete</th> : null}
                 </tr>
               </thead>
               <tbody>

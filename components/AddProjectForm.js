@@ -68,7 +68,7 @@ function AddProjectForm() {
     }
 
     if (!estimatedDeliveryDate) {
-      newErrors.estimatedDeliveryDate = "Estimated Delivery Date is required";
+      newErrors.estimatedDeliveryDate = "Estimated Delivery Time is required";
     }
 
     if (startDate && endDate && startDate > endDate) {
@@ -240,13 +240,13 @@ function AddProjectForm() {
 
         <div className="form-group">
           <label htmlFor="estimatedDeliveryDate" className="form-label">
-            Estimated Delivery Date
+            Estimated Delivery Time
           </label>
           <input
             type="text"
             className="form-control"
             id="estimatedDeliveryDate"
-            placeholder="Enter estimated delivery date"
+            placeholder="Enter estimated delivery time"
             disabled={showSuggestions}
             value={estimatedDeliveryDate}
             onChange={(e) => setEstimatedDeliveryDate(e.target.value)}

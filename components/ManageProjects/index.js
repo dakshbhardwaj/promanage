@@ -162,7 +162,7 @@ const ManageProjects = () => {
                   <th>Status</th>
                   <th>Estimated Delivery Time</th>
                   <th>Start Date</th>
-                  {user?.isAdmin ? <th>Actions</th> : null}
+                  {user?.isAdmin ? <th>Edit/Delete</th> : null}
                 </tr>
               </thead>
               <tbody>
