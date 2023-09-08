@@ -296,6 +296,7 @@ const ManageProjects = () => {
               required
             />
           </div>
+          <br />
           <button
             type="button"
             className="btn btn-success"
@@ -303,7 +304,7 @@ const ManageProjects = () => {
           >
             Update Projects
           </button>
-
+          &nbsp;
           <button
             type="button"
             className="btn btn-secondary"
