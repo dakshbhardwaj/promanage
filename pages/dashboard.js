@@ -123,7 +123,7 @@ function Dashboard() {
                     href="#UserDetail"
                     onClick={handleUserDetailsClick}
                   >
-                    Update User Details
+                    Update Personal Details
                   </a>
                 </li>
                 {/* <li

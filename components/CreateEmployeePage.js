@@ -4,7 +4,7 @@ import EmployeeForm from "./EmployeeForm";
 const CreateEmployeePage = () => {
   return (
     <div>
-      <h1>Enter User Details</h1>
+      <h1>Enter Personal Details</h1>
       <EmployeeForm />
     </div>
   );
