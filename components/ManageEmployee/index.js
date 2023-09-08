@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import LottieLoader from "react-lottie-loader";
+import loaderAnimation from "../../public/loader-animation.json";
 
 const modalCustomStyles = {
   content: {
@@ -18,9 +20,11 @@ const modalCustomStyles = {
 const ManageEmployee = () => {
   const [employees, setEmployees] = useState([]);
   const [user, setUser] = useState(null);
+  const [isListLoading, setIsListLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    setIsListLoading(true);
     axios
       .get("https://promanage-fpft.onrender.com/users")
       .then((res) => {
@@ -29,6 +33,9 @@ const ManageEmployee = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsListLoading(false);
       });
   }, []);
 
@@ -124,31 +131,47 @@ const ManageEmployee = () => {
               </div> */}
             </div>
           </div>
-          <table className="table table-hover">
-            <thead className="thead-dark">
-              <tr>
-                <th>#</th>
-                <th>Display Name</th>
-                <th>Designation</th>
-                <th>Years Of Experience</th>
-                {user?.isAdmin ? <th>Actions</th> : null}
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((employee, index) => (
-                <tr
-                  key={index}
-                  onClick={() => {
-                    router.push(`../employee/${employee._id}`);
-                  }}
-                >
-                  <td>{index + 1}</td>
-                  <td>{employee.displayName}</td>
-                  <td>{employee.designation}</td>
-                  <td>{employee.yearsOfExperience}</td>
-                  {user?.isAdmin ? (
-                    <td>
-                      {/* <a
+          {isListLoading ? (
+            <div
+              style={{
+                width: "100vh",
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LottieLoader
+                animationData={loaderAnimation}
+                style={{ width: "100px", height: "100px" }}
+              />
+            </div>
+          ) : (
+            <table className="table table-hover">
+              <thead className="thead-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Display Name</th>
+                  <th>Designation</th>
+                  <th>Years Of Experience</th>
+                  {user?.isAdmin ? <th>Actions</th> : null}
+                </tr>
+              </thead>
+              <tbody>
+                {employees.map((employee, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => {
+                      router.push(`../employee/${employee._id}`);
+                    }}
+                  >
+                    <td>{index + 1}</td>
+                    <td>{employee.displayName}</td>
+                    <td>{employee.designation}</td>
+                    <td>{employee.yearsOfExperience}</td>
+                    {user?.isAdmin ? (
+                      <td>
+                        {/* <a
                       className="edit"
                       title="Edit"
                       onClick={(e) => {
@@ -163,29 +186,30 @@ const ManageEmployee = () => {
                     >
                       <i className="material-icons">&#xE254;</i>
                     </a> */}
-                      <a
-                        className="delete"
-                        title="Delete"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          deleteEmployee(employee);
-                        }}
-                        style={{
-                          padding: 10,
-                          paddingLeft: 0,
-                        }}
-                      >
-                        <i className="material-icons" color="red">
-                          &#xE872;
-                        </i>
-                      </a>
-                    </td>
-                  ) : null}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                        <a
+                          className="delete"
+                          title="Delete"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            deleteEmployee(employee);
+                          }}
+                          style={{
+                            padding: 10,
+                            paddingLeft: 0,
+                          }}
+                        >
+                          <i className="material-icons" color="red">
+                            &#xE872;
+                          </i>
+                        </a>
+                      </td>
+                    ) : null}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
 

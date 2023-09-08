@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
+import LottieLoader from "react-lottie-loader";
+import loaderAnimation from "../public/loader-animation.json";
 
 const modalCustomStyles = {
   content: {
@@ -25,6 +27,8 @@ function AddProjectForm() {
   const [errors, setErrors] = useState({});
   const [employees, setEmployees] = useState([]);
   const [project, setProject] = useState();
+  const [isProjectSubmitted, setIsProjectSubmitted] = useState(false);
+  const [areSuggestionsLoading, setAreSuggestionsLoading] = useState(false);
 
   const [newEmployeesList, setNewEmployeesList] = useState([]);
 
@@ -84,21 +88,25 @@ function AddProjectForm() {
         startDate,
         endDate,
       };
-
+      setIsProjectSubmitted(true);
       axios
         .post("https://promanage-fpft.onrender.com/project", formData)
         .then((res) => {
           console.log(res.data);
           setProject(res.data);
+          setAreSuggestionsLoading(true);
+          setShowSuggestion(true);
           axios
             .get(`https://promanage-fpft.onrender.com/suggest/${res.data._id}`)
             .then((suggestionRes) => {
-              setShowSuggestion(true);
               setEmployees(suggestionRes.data.teamMembers);
             });
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          setAreSuggestionsLoading(false);
         });
     } else {
       setErrors(newErrors);
@@ -109,8 +117,8 @@ function AddProjectForm() {
     const updatedEmployees = employees.filter((emp) => {
       return (emp.userId ?? emp._id) != employeeId;
     });
-    const updatedAcceptedEmployees = acceptedEmployees.filter((emp) => {
-      return (emp.userId ?? emp._id) != employeeId;
+    const updatedAcceptedEmployees = acceptedEmployees.filter((empId) => {
+      return empId != employeeId;
     });
     setEmployees([...updatedEmployees]);
     axios
@@ -247,66 +255,90 @@ function AddProjectForm() {
             <p className="text-danger">{errors.estimatedDeliveryDate}</p>
           )}
         </div>
-
-        <button type="submit" className="btn btn-primary">
-          Submit
+        <br />
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={isProjectSubmitted}
+        >
+          {isProjectSubmitted ? "Submitted" : "Submit"}
         </button>
       </form>
+      <br />
+      <br />
       {showSuggestions ? (
         <div>
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Years Of Experience</th>
-                <th>Designation</th>
-                <th>Add</th>
-                <th>Remove</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((employee, index) => (
-                <tr key={index}>
-                  <td>{employee.displayName}</td>
-                  <td>{employee.yearsOfExperience} years</td>
-                  <td>{employee.designation}</td>
-                  <td>
-                    <button
-                      onClick={() => {
-                        acceptEmployee(employee.userId ?? employee._id);
-                      }}
-                      disabled={acceptedEmployees.includes(
-                        employee.userId ?? employee._id
-                      )}
-                    >
-                      {acceptedEmployees.includes(
-                        employee.userId ?? employee._id
-                      )
-                        ? "Accepted"
-                        : "Accept"}
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => {
-                        removeEmployee(employee.userId ?? employee._id);
-                      }}
-                    >
-                      Remove
-                    </button>
-                  </td>
+          <h4>Suggestions List</h4>
+          <br />
+          {areSuggestionsLoading ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LottieLoader
+                animationData={loaderAnimation}
+                style={{ width: "100px", height: "100px" }}
+              />
+            </div>
+          ) : (
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Years Of Experience</th>
+                  <th>Designation</th>
+                  <th>Add</th>
+                  <th>Remove</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <button
-            type="button"
-            className="btn btn-info add-new"
-            onClick={() => openModal(null)}
-          >
-            Add New
-          </button>
-
+              </thead>
+              <tbody>
+                {employees.map((employee, index) => (
+                  <tr key={index}>
+                    <td>{employee.displayName}</td>
+                    <td>{employee.yearsOfExperience} years</td>
+                    <td>{employee.designation}</td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          acceptEmployee(employee.userId ?? employee._id);
+                        }}
+                        disabled={acceptedEmployees.includes(
+                          employee.userId ?? employee._id
+                        )}
+                      >
+                        {acceptedEmployees.includes(
+                          employee.userId ?? employee._id
+                        )
+                          ? "Accepted"
+                          : "Accept"}
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          removeEmployee(employee.userId ?? employee._id);
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {!areSuggestionsLoading && (
+            <button
+              type="button"
+              className="btn btn-info add-new"
+              onClick={() => openModal(null)}
+            >
+              Add More
+            </button>
+          )}
           <Modal
             isOpen={isModalOpen}
             onRequestClose={closeModal}
