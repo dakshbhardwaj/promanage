@@ -22,6 +22,7 @@ const EmployeeForm = () => {
   }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -126,12 +127,10 @@ const EmployeeForm = () => {
     });
 
     if (!hasErrors) {
-      console.log({ currentUser });
+      setIsSubmitInProgress(true);
       axios
         .put(
-          `https://promanage-fpft.onrender.com/user/${
-            currentUser?.user?._id ?? ""
-          }`,
+          `https://promanage-fpft.onrender.com/user/${currentUser?._id ?? ""}`,
           formData
         )
         .then((res) => {
@@ -139,6 +138,9 @@ const EmployeeForm = () => {
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          setIsSubmitInProgress(false);
         });
     }
   };
@@ -232,14 +234,16 @@ const EmployeeForm = () => {
             </tr>
           </thead>
           <tbody>
-            {formData.skills.map((skill, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{skill?.skill?.name ?? skill?.name}</td>
-                <td>{skill.yearsOfExperience ?? newSkill.yoe} years</td>
-                <td>{ProficiencyRating?.[skill?.rating ?? "1"]?.label}</td>
-              </tr>
-            ))}
+            {formData.skills.map((skill, index) => {
+              return (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{skill?.skill?.name ?? skill?.name}</td>
+                  <td>{skill.yearsOfExperience ?? skill.yoe} years</td>
+                  <td>{ProficiencyRating?.[skill?.rating ?? "1"]?.label}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -280,6 +284,7 @@ const EmployeeForm = () => {
               className="form-control"
             />
           </div>
+          <br />
           <div className="form-group">
             <label htmlFor="yearsOfExperienceSkill" className="form-label">
               Years of Experience:
@@ -293,6 +298,7 @@ const EmployeeForm = () => {
               className="form-control"
             />
           </div>
+          <br />
           <div className="form-group">
             <label htmlFor="proficiency" className="form-label">
               Proficiency:
@@ -311,9 +317,11 @@ const EmployeeForm = () => {
               ))}
             </select>
           </div>
+          <br />
           <button type="button" className="btn btn-success" onClick={addSkill}>
             Add Skill
           </button>
+          &nbsp;
           <button
             type="button"
             className="btn btn-secondary"
@@ -325,7 +333,11 @@ const EmployeeForm = () => {
       </Modal>
       <br />
       <br />
-      <button type="submit" className="btn btn-success">
+      <button
+        type="submit"
+        className="btn btn-success"
+        disabled={isSubmitInProgress}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -337,7 +349,7 @@ const EmployeeForm = () => {
           <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
           <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
         </svg>
-        &nbsp; Submit
+        &nbsp; {isSubmitInProgress ? "Submitting" : "Submit"}
       </button>
     </form>
   );

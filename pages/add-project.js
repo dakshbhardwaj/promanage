@@ -6,7 +6,7 @@ export default function AddProject() {
     <div className="container p-3 vh-100">
       <div className={styles.card}>
         <div className={styles.cardContent}>
-          <h2>Pro Manage AI</h2>
+          <h2>Add Project</h2>
           <AddProjectForm />
         </div>
       </div>

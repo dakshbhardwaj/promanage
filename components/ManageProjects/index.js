@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { convertISODateToCustomFormat } from "../../utils";
+import LottieLoader from "react-lottie-loader";
+import loaderAnimation from "../../public/loader-animation.json";
 
 const modalCustomStyles = {
   content: {
@@ -19,6 +21,7 @@ const modalCustomStyles = {
 const ManageProjects = () => {
   const [projects, setProjects] = useState([]);
   const [user, setUser] = useState(null);
+  const [isListLoading, setIsListLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,6 +31,7 @@ const ManageProjects = () => {
   console.log(user);
 
   useEffect(() => {
+    setIsListLoading(true);
     axios
       .get("https://promanage-fpft.onrender.com/project")
       .then((res) => {
@@ -36,6 +40,9 @@ const ManageProjects = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsListLoading(false);
       });
   }, []);
 
@@ -130,71 +137,92 @@ const ManageProjects = () => {
               ) : null}
             </div>
           </div>
-          <table className="table table-hover">
-            <thead className="thead-dark">
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Estimated Delivery Time</th>
-                <th>Start Date</th>
-                {user?.isAdmin ? <th>Actions</th> : null}
-              </tr>
-            </thead>
-            <tbody>
-              {projects.map((project, index) => (
-                <tr
-                  key={index}
-                  onClick={() => {
-                    router.push(`../project/${project._id}`);
-                  }}
-                >
-                  <td>{index + 1}</td>
-                  <td>{project.name}</td>
-                  <td>{project.description}</td>
-                  <td>{project.status}</td>
-                  <td>{project.estimatedDeliveryTime}</td>
-                  <td>{convertISODateToCustomFormat(project.startDate)}</td>
-                  {user && user?.isAdmin ? (
-                    <td>
-                      <a
-                        className="edit"
-                        title="Edit"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          openModal(project);
-                        }}
-                        style={{
-                          padding: 10,
-                          paddingLeft: 0,
-                        }}
-                      >
-                        <i className="material-icons">&#xE254;</i>
-                      </a>
-                      <a
-                        className="delete"
-                        title="Delete"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          deleteProject(project);
-                        }}
-                        style={{
-                          padding: 10,
-                        }}
-                      >
-                        <i className="material-icons" color="red">
-                          &#xE872;
-                        </i>
-                      </a>
-                    </td>
-                  ) : null}
+          {isListLoading ? (
+            <div
+              style={{
+                width: "100vh",
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LottieLoader
+                animationData={loaderAnimation}
+                style={{ width: "100px", height: "100px" }}
+              />
+            </div>
+          ) : (
+            <table className="table table-hover">
+              <thead className="thead-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Status</th>
+                  <th>Estimated Delivery Time</th>
+                  <th>Start Date</th>
+                  {user?.isAdmin ? <th>Actions</th> : null}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {projects.map((project, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => {
+                      router.push(`../project/${project._id}`);
+                    }}
+                  >
+                    <td>{index + 1}</td>
+                    <td>{project.name}</td>
+                    <td>{project.description}</td>
+                    <td>
+                      <span className="badge rounded-pill bg-success">
+                        {project.status}
+                      </span>
+                    </td>
+                    <td>{project.estimatedDeliveryTime}</td>
+                    <td>{convertISODateToCustomFormat(project.startDate)}</td>
+                    {user && user?.isAdmin ? (
+                      <td>
+                        <a
+                          className="edit"
+                          title="Edit"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            openModal(project);
+                          }}
+                          style={{
+                            padding: 10,
+                            paddingLeft: 0,
+                          }}
+                        >
+                          <i className="material-icons">&#xE254;</i>
+                        </a>
+                        <a
+                          className="delete"
+                          title="Delete"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            deleteProject(project);
+                          }}
+                          style={{
+                            padding: 10,
+                          }}
+                        >
+                          <i className="material-icons" color="red">
+                            &#xE872;
+                          </i>
+                        </a>
+                      </td>
+                    ) : null}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
 

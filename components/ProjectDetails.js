@@ -6,8 +6,7 @@ import { convertISODateToCustomFormat } from "../utils";
 const ProjectDetails = ({ project, projectUsers }) => {
   const router = useRouter();
   return (
-    <div className="container mt-5">
-      <h1>Project Details</h1>
+    <div>
       <div className="mb-3">
         <strong>Project Name:</strong> {project.name}
       </div>

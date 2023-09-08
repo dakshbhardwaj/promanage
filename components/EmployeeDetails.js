@@ -8,8 +8,7 @@ import loaderAnimation from "../public/loader-animation.json";
 const EmployeeDetails = ({ employee }) => {
   const router = useRouter();
   return employee.user ? (
-    <div className="container mt-5">
-      <h1>Employee Details</h1>
+    <div>
       <div className="mb-4">
         <strong>Name:</strong> {employee.user?.displayName ?? ""}
       </div>
